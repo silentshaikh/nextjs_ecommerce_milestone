@@ -1,27 +1,31 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+body{
+  font-family: "Beatrice-Deck-Trial";
+  font-weight: bolder;
+}
+@font-face {
+  font-family: 'Beatrice Deck Trial';
+  src: url('./fonts/BeatriceDeckTRIAL-Extrabold-BF64829e919604b.ttf' ) format('woff2');
+       /* url('./fonts/BeatriceTRIAL-Semibold-BF64829e8a9fb34') format('woff'); */
+  /* font-weight: normal; */
+  /* font-style: normal; */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+.colroRed{
+  color: aqua;
+}
+/* Nav List */
+@media only screen and (max-width:780px) {
+  .navlist{
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
   }
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-}
 
-@layer utilities {
-  .text-balance {
-    text-wrap: balance;
-  }
-}
