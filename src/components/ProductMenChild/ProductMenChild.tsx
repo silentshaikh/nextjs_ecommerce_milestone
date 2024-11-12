@@ -3,8 +3,9 @@ import ProductMenList from '../ProductMenList/ProductMenList';
 import ProductContent from '../ProductContent/ProductContent';
 import { removDuplicateType, rubikBuble } from '@/utils/Helper/helper';
 import useClothContext from '@/Hooks/ClothContext/ClothContext';
-function ProductMenChild() {
-  const {sideBar } = useClothContext();  
+import { ClothList } from '@/utils/Type/type';
+function ProductMenChild({productMen}:{productMen:ClothList[]| undefined}) {
+  const {sideBar, menBtn} = useClothContext();  
   return (
     <section 
       className={`${rubikBuble.className} bg-[#f3f3f3] pt-20 
@@ -19,8 +20,8 @@ function ProductMenChild() {
       max-[360px]:px-[10px]
        max-[360px]:pt-12`}
     >
-      <ProductContent name='meninput' removDuplicateBtn={removDuplicateType}/> 
-      <ProductMenList />
+      <ProductContent name='meninput' removDuplicateBtn={menBtn}/> 
+      <ProductMenList productMen={productMen} />
     </section>
   );
 };

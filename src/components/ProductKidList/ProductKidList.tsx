@@ -2,7 +2,8 @@
 import { kidProduct, poppins, rubikBuble } from '@/utils/Helper/helper';
 import Card from '../Card/Card';
 import useClothContext from '@/Hooks/ClothContext/ClothContext';
-function ProductKidList() {
+import { ClothList } from '@/utils/Type/type';
+function ProductKidList({productKid}:{productKid:ClothList[] | undefined}) {
   const {inputList} = useClothContext();
   let {kidinput} = inputList;
   //find product

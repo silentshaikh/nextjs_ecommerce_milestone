@@ -1,6 +1,6 @@
 'use client';
 import { createContext,useState,useReducer, ChangeEvent, useRef } from "react";
-import { Action, ContextChild, ContextType, ProductInpObj, SidebrToggl } from "@/utils/Type/type";
+import { Action, ClothList, ContextChild, ContextType, ProductInpObj, SidebrToggl } from "@/utils/Type/type";
 
 export const ClothAppContext = createContext<ContextType | null>(null);
 // reducer Action
@@ -41,6 +41,8 @@ function Context({ children }: ContextChild) {
   const [inputList,setInputList] = useState<ProductInpObj>({kidinput:'',meninput:'',womeninput:''});
   //hero slider
   const [heroSlide,setHeroSlide] = useState(false);
+  // product api state
+  const [productList,setProductList] = useState<ClothList[] | undefined>([]);
   //for set the position of sidebar
   const footerRef = useRef<HTMLElement|null>(null);
     const sideBarRef = useRef<HTMLElement|null>(null);
@@ -76,6 +78,55 @@ function Context({ children }: ContextChild) {
     setColr(bgColor);
   }
 
+  //fetch product list 
+  const fetchProductData = async (productApi:string) => {
+    try {
+      const fetchProduct = await fetch(productApi, { cache: 'force-cache' });
+      const productIntoJson:ClothList[] = await fetchProduct.json();
+      return productIntoJson;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  // fetch all product
+  const fetchProduct = async (productDetail:string) => {
+    try {
+      const fetchDetail = await fetch(productDetail, { cache: 'force-cache' });
+      const detailIntoJson = await fetchDetail.json();
+      return detailIntoJson;
+    }catch (error){
+      console.log(error);
+    }
+  }
+  (async () => {
+    const clothListForProductDetail:ClothList[] | undefined = await fetchProduct('http://localhost:3000/api/clothapi');
+    setProductList(clothListForProductDetail);
+  })();
+
+    // product men
+    const productMen = productList?.filter((e) => {
+      return e.category === 'men';
+    });
+    const menBtn = [... new Set(productMen?.map((e) => {
+      return  e.type;
+     }))];
+
+    // product women
+    const productWomen = productList?.filter((e) => {
+      return e.category === 'women';
+    });
+    const womenBtn = [... new Set(productWomen?.map((e) => {
+      return  e.type;
+     }))]
+    // product kid
+    const productKid = productList?.filter((e) => {
+      return e.category === 'kid';
+    })
+    const kidBtn = [... new Set(productKid?.map((e) => {
+      return  e.type;
+     }))]
+
   // Context value
   const clothOperation:ContextType = { 
     list, 
@@ -88,12 +139,18 @@ function Context({ children }: ContextChild) {
     heroSlide,
     footerRef,
     sideBarRef,
+    productList,
+    menBtn,
+    womenBtn,
+    kidBtn,
     setHeroSlide,
     onInputHandler,
    sideBarToggle,
    imgChange,
    selectColr,
-   toggleAgainSide
+   toggleAgainSide,
+   fetchProductData,
+  //  fetchProductDetail,
   };
 
   return (

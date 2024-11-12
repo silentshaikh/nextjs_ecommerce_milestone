@@ -4,10 +4,11 @@ import ProductMenList from "../ProductMenList/ProductMenList";
 import ProductSideBar from "../ProductSideBar/ProductSideBar";
 import ProductMenChild from "../ProductMenChild/ProductMenChild";
 import ProductMenParent from "../ProductMenParent/ProductMenParent";
-function ProductMen() {
+import { ClothList } from "@/utils/Type/type";
+function ProductMen({productMen}:{productMen:ClothList[] | undefined}) {
   return (
     <>
-   <ProductMenParent/>
+   <ProductMenParent productMen={productMen}/>
     </>
   )
 };

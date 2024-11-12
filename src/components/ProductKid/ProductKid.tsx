@@ -1,8 +1,9 @@
+import { ClothList } from '@/utils/Type/type';
 import ProductKidChild from '../ProductKidChild/ProductKidChild';
-function ProductKid() {
+function ProductKid({productKid}:{productKid:ClothList[] | undefined}) {
   return (
     <>
-      <ProductKidChild/>
+      <ProductKidChild productKid={productKid}/>
     </>
   )
 }

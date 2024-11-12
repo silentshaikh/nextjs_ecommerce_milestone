@@ -778,7 +778,6 @@ const menProductType = menProduct.map((e) => {
 });
 //Remove Duplicate 
 export const removDuplicateType:string[] = [... new Set(menProductType)];
-console.log(removDuplicateType) 
 
 //Filter the Women Product
 export  const womenProduct = clothList.filter((e) => {
