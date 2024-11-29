@@ -6,21 +6,22 @@ import Link from 'next/link';
 import useClothContext from '@/Hooks/ClothContext/ClothContext';
 import { ClothList } from '@/utils/Type/type';
 function ProductMenList({productMen}:{productMen:ClothList[]| undefined}) {
-  const {inputList,fetchProductData} = useClothContext();
+  const {inputList,isType,product} = useClothContext();
   // const productMen = await fetchProductData(`http://localhost:3000/api/men`);
-  let {meninput} = inputList;
-  const searchProd = productMen?.filter((e) => {
-    return e.name.toLowerCase().split(/\s+/).join("").includes(meninput.toLowerCase().split(/\s+/).join(""));
-  });
-  if(searchProd){
+  // let {meninput} = inputList;
+  // const searchProd = productMen?.filter((e) => {
+  //   return e.name.toLowerCase().split(/\s+/).join("").includes(meninput.toLowerCase().split(/\s+/).join(""));
+  // });
+  console.log(product);
+  if(product){
     return (
       <section className={`${poppins.className} flex justify-evenly items-center flex-wrap`}>
         {
-          searchProd.length>0 ?
-        (searchProd.map((e,i) => {
+          product.length>0 ?
+        (product.map((e,i) => {
           return(
               <Card  key={e.id} color={e.color} name={e.name} img={e.img} id={e.id} category={e.category} imgList={e.imgList}
-              size={e.size} price={e.price}  />
+              size={e.size} price={e.price}  type={e.type} isAvailable={e.isAvailable}/>
           );
         }))
         : (<div className={` ${rubikBuble.className} h-screen flex items-center`}> 
@@ -31,9 +32,9 @@ function ProductMenList({productMen}:{productMen:ClothList[]| undefined}) {
     )
   }else{
     return (
-      <>
-      <h1>Product Not FOund</h1>
-      </>
+      <div className='h-screen'>
+      <h1>Product Not Found</h1>
+      </div>
     )
   }
 };

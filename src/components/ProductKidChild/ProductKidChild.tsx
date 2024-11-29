@@ -5,7 +5,7 @@ import ProductKidList from '../ProductKidList/ProductKidList';
 import useClothContext from '@/Hooks/ClothContext/ClothContext';
 import { ClothList } from '@/utils/Type/type';
 function ProductKidChild({productKid}:{productKid:ClothList[] | undefined}) {
-    const {sideBar,kidBtn} = useClothContext();
+    const {sideBar,kidBtn,onHandleKidFilter} = useClothContext();
   return (
     <section className={` ${rubikBuble.className} pt-20 bg-[#f3f3f3]
     ${sideBar ? 'px-[20px]' : `pl-[350px] max-[1080px]:pl-[330px] 
@@ -20,7 +20,7 @@ function ProductKidChild({productKid}:{productKid:ClothList[] | undefined}) {
       max-[360px]:px-[10px]
        max-[360px]:pt-12
     `}>
-      <ProductContent name='kidinput' removDuplicateBtn={kidBtn}/>
+      <ProductContent name='kidinput' removDuplicateBtn={kidBtn} categ='kid' btnFilter={onHandleKidFilter}/>
       <ProductKidList productKid={productKid}/>
     </section>
   )

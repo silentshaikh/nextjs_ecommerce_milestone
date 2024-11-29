@@ -1,4 +1,4 @@
-import { ChangeEvent, MutableRefObject, ReactNode } from "react";
+import { ChangeEvent, FormEvent, MutableRefObject, ReactNode } from "react";
 import { Interface } from "readline";
 
 //Navlist
@@ -10,7 +10,7 @@ export interface NavList {
 //All Product
 export interface ClothList {
   name: string;
-  price: string;
+  price: number;
   img: string;
   size: string[];
   color: string[];
@@ -71,6 +71,14 @@ export interface ProductContentType {
 export interface ProductSearchType {
   name: string;
   removDuplicateBtn: string[];
+  categ:string
+}
+
+export interface ProductContType {
+  name: string;
+  removDuplicateBtn: string[];
+  categ:string;
+  btnFilter:(type:string,categ:string) => void;
 }
 
 //Card Type for Cart Page
@@ -116,6 +124,7 @@ export interface CheckOutCardDetail {
 export interface TypeForAvailable {
   name: string;
   label: string;
+  id:string
 }
 
 //Product Detail Page
@@ -128,7 +137,11 @@ export interface MenDetailProps {
 export interface ContextChild {
   children: ReactNode;
 }
-
+export interface priceFilter{
+  price:string;
+  priceWomen:string;
+  priceKid:string;
+}
 //context type
 export interface ContextType {
   list: boolean;
@@ -144,10 +157,30 @@ export interface ContextType {
   heroSlide: boolean;
   footerRef: MutableRefObject<HTMLElement | null>;
   sideBarRef: MutableRefObject<HTMLElement | null>;
-  productList: ClothList[] | undefined;
+  productList: ClothList[] ;
   menBtn: string[];
   womenBtn: string[];
   kidBtn: string[];
+  // menProd:ClothList[];
+  // womenProd:ClothList[] ;
+  // kidProd:ClothList[] ;
+  // isType:boolean;
+  product:ClothList[];
+  womenProduct:ClothList[];
+  kidProduct:ClothList[];
+  productSize:string[];
+  productColor:string[];
+  collection:ClothList[];
+  backUpCollection:ClothList[];
+  collectNav:boolean;
+  collectMen:ClothList[];
+  // price:string;
+  // womenPrice:string;
+  priceInp:priceFilter;
+  onPriceFilter:(e:ChangeEvent<HTMLInputElement>) => void;
+  onPriceFilterWomen:(e:ChangeEvent<HTMLInputElement>) => void;
+    onPriceFilterKid:(e:ChangeEvent<HTMLInputElement>) => void;
+  onCollectionFilter:(categ:string) => void;
   setHeroSlide: (e: boolean) => void;
   onInputHandler: (e: ChangeEvent<HTMLInputElement>) => void;
   sideBarToggle: () => void;
@@ -155,6 +188,22 @@ export interface ContextType {
   selectColr: (bgColor: string) => void;
   toggleAgainSide: (e: boolean | undefined) => void;
   fetchProductData: (e: string) => Promise<ClothList[] | undefined>;
+  onHandleFilter: (type:string,categ:string) => void;
+  onHandleWomenFilter: (type:string,categ:string) => void;
+  onHandleKidFilter: (type:string,categ:string) => void;
+  onProductSearch: (e:FormEvent<HTMLFormElement>) => void;
+  onSizeFilter: (size:string) => void;
+  onSizeWomenFilter: (size:string) => void;
+  onSizeKidFilter: (size:string) => void;
+  onColrFilter: (color:string) => void;
+  onColrWomenFilter: (color:string) => void;
+  onColrKidFilter: (color:string) => void;
+  onProductAvailable:() => void;
+  onProductWomenAvailable:() => void;
+  onProductKidAvailable:() => void;
+  onOutOfStock:() => void;
+  onOutOfStockWomen:() => void;
+  onOutOfStockKid:() => void;
   // fetchProductDetail:(e:string) => Promise<ClothList|undefined>
 }
 
@@ -162,9 +211,26 @@ export interface ContextType {
 export interface SidebrToggl {
   sideBar: boolean;
   paddRemove: boolean | undefined;
-}
+};
 
 export interface Action {
   type: string;
   payload?: boolean;
+};
+
+//product reducer
+export interface ProductReducer{
+  product:ClothList[];
+  backupProduct:ClothList[];
+  womenProduct:ClothList[];
+    womenBackupProduct:ClothList[];
+    kidProduct:ClothList[],
+    kidBackupProduct:ClothList[],
+    availableFilter:null|boolean;
+    availableWomenFilter:null | boolean,
+    availableKidFilter:null | boolean,
+};
+export interface ProdAction{
+  type:string;
+  payload:any;
 }

@@ -5,7 +5,7 @@ import { removDuplicateType, rubikBuble } from '@/utils/Helper/helper';
 import useClothContext from '@/Hooks/ClothContext/ClothContext';
 import { ClothList } from '@/utils/Type/type';
 function ProductMenChild({productMen}:{productMen:ClothList[]| undefined}) {
-  const {sideBar, menBtn} = useClothContext();  
+  const {sideBar, menBtn,onHandleFilter} = useClothContext();  
   return (
     <section 
       className={`${rubikBuble.className} bg-[#f3f3f3] pt-20 
@@ -16,12 +16,12 @@ function ProductMenChild({productMen}:{productMen:ClothList[]| undefined}) {
       max-[780px]:pl-[240px] 
       max-[720px]:pl-[220px] 
       max-[655px]:pl-[200px] 
-      max-[420px]:pl-[190px] `}
+      max-[420px]:pl-[190px]`}
       max-[360px]:px-[10px]
        max-[360px]:pt-12`}
     >
-      <ProductContent name='meninput' removDuplicateBtn={menBtn}/> 
-      <ProductMenList productMen={productMen} />
+      <ProductContent name='meninput' removDuplicateBtn={menBtn} categ='men' btnFilter={onHandleFilter}/> 
+      <ProductMenList productMen={productMen}/>
     </section>
   );
 };

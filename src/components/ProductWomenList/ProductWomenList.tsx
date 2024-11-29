@@ -3,23 +3,23 @@ import Card from '../Card/Card';
 import useClothContext from '@/Hooks/ClothContext/ClothContext';
 import { ClothList } from '@/utils/Type/type';
 
-function ProductWomenList({womenProduct}:{womenProduct:ClothList[] | undefined}) {
-  const {inputList,productList} = useClothContext();
-  let {womeninput} = inputList;
+function ProductWomenList({}:{womenProduct:ClothList[] | undefined}) {
+  const {inputList,productList,womenProduct} = useClothContext();
+  // let {womeninput} = inputList;
   //find product
-  const searchWomenProduct:ClothList[]| undefined = womenProduct?.filter((e) => {
-    return e.name.toLowerCase().split(/\s+/).join("").includes(womeninput.toLowerCase().split(/\s+/).join(""));
-  });
-  if(searchWomenProduct){
+  // const searchWomenProduct:ClothList[]| undefined = womenProduct?.filter((e) => {
+  //   return e.name.toLowerCase().split(/\s+/).join("").includes(womeninput.toLowerCase().split(/\s+/).join(""));
+  // });
+  if(womenProduct){
     return (
       <section className={`${poppins.className} flex justify-evenly items-center flex-wrap`}>
         {
-         searchWomenProduct.length > 0 ? 
-        (searchWomenProduct.map((e) => {
+         womenProduct.length > 0 ? 
+        (womenProduct.map((e) => {
           return(
          
               <Card key={e.id} color={e.color} name={e.name} img={e.img} id={e.id} category={e.category} imgList={e.imgList}
-              size={e.size} price={e.price}    />
+              size={e.size} price={e.price} type={e.type} isAvailable={e.isAvailable} />
             
           )
         }))

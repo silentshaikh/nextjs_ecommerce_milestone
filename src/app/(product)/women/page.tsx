@@ -12,7 +12,7 @@ const fetchWomenData = async (womenProduct:string) => {
 }
 
 async function Women() {
-  const womenProduct:ClothList[]|undefined =await fetchWomenData(`http://localhost:3000/api/women`)
+  const womenProduct:ClothList[]|undefined =await fetchWomenData(`http://localhost:3000/api/women`);
   return (
     <main>
       <ProductWomen womenProduct={womenProduct}/>

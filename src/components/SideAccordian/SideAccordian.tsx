@@ -3,14 +3,36 @@ import { Collapse } from 'antd';
 import { workSans } from '@/utils/Helper/helper';
 import SideAvailable from '../SideAvailable/SideAvailable';
 import SideColors from '../SideColors/SideColors';
+import useClothContext from '@/Hooks/ClothContext/ClothContext';
+import { usePathname } from 'next/navigation';
 
-const text = (
-  <form action='' className='flex flex-col'>
-  <SideAvailable label='Availability' name='available'/>
-  <SideAvailable label='Out of Stock' name='outofstock'/>
+const Text = () =>{
+  const sidebarPath = usePathname();
+  const {onOutOfStock,onProductAvailable,onProductKidAvailable,onProductWomenAvailable,onOutOfStockWomen,onOutOfStockKid} = useClothContext()
+  return(
+    
+    <form action='' className='flex flex-col'>
+  {sidebarPath === '/men' ?<> <div className='flex gap-4' onClick={onProductAvailable}><SideAvailable label='Availability' name='available' id='available'/></div>  <div className='flex gap-4' onClick={onOutOfStock}><SideAvailable label='Out of Stock' name='outofstock' id='outofstock'/></div></>:''}
+  {sidebarPath === '/women' ? <><div className='flex gap-4' onClick={onProductWomenAvailable}><SideAvailable label='Availability' name='available' id='available'/></div>  <div className='flex gap-4' onClick={onOutOfStockWomen}><SideAvailable label='Out of Stock' name='outofstock' id='outofstock'/></div></>:''}
+  {sidebarPath === '/kid' ? <><div className='flex gap-4' onClick={onProductKidAvailable}><SideAvailable label='Availability' name='available' id='available'/></div>  <div className='flex gap-4' onClick={onOutOfStockKid}><SideAvailable label='Out of Stock' name='outofstock' id='outofstock'/></div> </>:''}
+ 
   </form>
+  )
+  
+// );
+}
 
-);
+const PriceFilter = () => {
+  const {priceInp,onPriceFilter,onPriceFilterWomen,onPriceFilterKid} = useClothContext();
+  const pricePath = usePathname();
+  return(
+    <>
+    {pricePath === '/men' ? <input className='w-[200px] bg-[#D9D9D9] outline-none' type="range" name="price" min={0} max={80} value={priceInp.price} onChange={(e) => onPriceFilter(e)} />:''}
+    {pricePath === '/women' ? <input className='w-[200px] bg-[#D9D9D9] outline-none' type="range" name="priceWomen" min={0} max={80} value={priceInp.priceWomen} onChange={(e) => onPriceFilterWomen(e)} />:''}
+    {pricePath === '/kid' ? <input className='w-[200px] bg-[#D9D9D9] outline-none' type="range" name="priceKid" min={0} max={80} value={priceInp.priceKid} onChange={(e) => onPriceFilterKid(e)} />:''}
+    </>
+  )
+}
 
 const clorList = ( <SideColors/> );
 
@@ -18,7 +40,7 @@ const items: CollapseProps['items'] = [
   {
     key: '1',
     label: 'Availability',
-    children: text,
+    children: <Text/>,
   },
   {
     key: '2',
@@ -28,23 +50,8 @@ const items: CollapseProps['items'] = [
   {
     key: '3',
     label: 'Price Range',
-    children: text,
-  },
-  {
-    key: '4',
-    label: 'Tags',
-    children: text,
-  },
-  {
-    key: '5',
-    label: 'Collection',
-    children: text,
-  },
-  {
-    key: '6',
-    label: 'Ratings',
-    children: text,
-  },
+    children: <PriceFilter/>,
+  }
   
 ];
 

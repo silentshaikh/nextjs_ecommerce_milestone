@@ -11,10 +11,10 @@ export async function GET(request:NextRequest,{params}:{params:{id:string}}){
     if(getProductDetail){
         return NextResponse.json(getProductDetail,{status:200})
     }else{
-        return NextResponse.json('failed to fetch product detail',{status:500});
+        return NextResponse.json('failed to fetch men product detail',{status:500});
     }
     } catch (error) {
-        return NextResponse.json('failed to fetch product detail',{status:500})
+        return NextResponse.json('failed to fetch men product detail',{status:500})
         ;
     };
 };

@@ -4,8 +4,10 @@ import SideBarHeading from '../SideBarHeading/SideBarHeading';
 import SideBarSize from '../SideBarSize/SideBarSize';
 import SideAccordian from '../SideAccordian/SideAccordian';
 import useClothContext from '@/Hooks/ClothContext/ClothContext';
+import { usePathname } from 'next/navigation';
 function SideBar() {
-    const {sideBar} = useClothContext();
+    const {sideBar,onSizeFilter,onSizeWomenFilter,onSizeKidFilter} = useClothContext();
+    const productPaht = usePathname();
 
     return (
         <aside
@@ -18,7 +20,9 @@ function SideBar() {
             max-[420px]:w-[190px] max-[360px]:z-[5] 
             max-[360px]:w-[210px]`}>
             <SideBarHeading />
-            <SideBarSize />
+            {productPaht === '/men' ? <SideBarSize sizeFilter={onSizeFilter}/> :''}
+            {productPaht === '/women' ? <SideBarSize sizeFilter={onSizeWomenFilter}/> :''}
+            {productPaht === '/kid' ? <SideBarSize sizeFilter={onSizeKidFilter}/> :''}
             <SideAccordian />
         </aside>
     );
