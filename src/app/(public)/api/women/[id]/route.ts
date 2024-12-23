@@ -1,7 +1,7 @@
 import { ClothList } from "@/utils/Type/type";
-import {  NextResponse } from "next/server";
+import {  NextRequest, NextResponse } from "next/server";
 
-export async function GET({params}:{params:{id:string}}){
+export async function GET(req:NextRequest,{params}:{params:{id:string}}){
     try {
         const fetchProductWomen = await fetch(`http://localhost:3000/api/women/`);
     const dataIntoJson:ClothList[] = await fetchProductWomen.json();

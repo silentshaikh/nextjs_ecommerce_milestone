@@ -133,7 +133,7 @@ export interface WebContentReducer {
 
 export interface WebContentAction{
   type:string;
-  payload:any;
+  payload: HeaderSanity| HeroSanity|WeekSanity|CollectionSanity|FashionContentSanity|FooterSanity|CartSanity|CheckoutSanity;
 };
 
 //All Product
@@ -393,5 +393,5 @@ export interface ProductReducer{
 };
 export interface ProdAction{
   type:string;
-  payload:any;
+  payload:string|null|boolean|ClothList[];
 };

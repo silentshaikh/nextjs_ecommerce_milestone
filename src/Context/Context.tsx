@@ -10,9 +10,16 @@ import {
 } from "react";
 import {
   Action,
+  CartSanity,
+  CheckoutSanity,
   ClothList,
+  CollectionSanity,
   ContextChild,
   ContextType,
+  FashionContentSanity,
+  FooterSanity,
+  HeaderSanity,
+  HeroSanity,
   // HeaderSanity,
   ProdAction,
   ProductInpObj,
@@ -20,6 +27,7 @@ import {
   SidebrToggl,
   WebContentAction,
   WebContentReducer,
+  WeekSanity,
 } from "@/utils/Type/type";
 // import { menProduct } from "@/utils/Helper/helper";
 import { client } from "@/sanity/lib/client";
@@ -166,21 +174,21 @@ function headerContReducer(
 ): WebContentReducer {
   switch (action.type) {
     case ACTIONCONTENT.HEADERCONTENT:
-      return (state = { ...state, headerContent: action.payload });
+      return (state = { ...state, headerContent: action.payload as HeaderSanity });
     case ACTIONCONTENT.HEROCONTENT:
-      return (state = { ...state, heroContent: action.payload });
+      return (state = { ...state, heroContent: action.payload as HeroSanity });
     case ACTIONCONTENT.NEWWEEKCONTENT:
-      return (state = { ...state, weekContent: action.payload });
+      return (state = { ...state, weekContent: action.payload as WeekSanity});
     case ACTIONCONTENT.COLLECTIONCONTENT:
-      return (state = { ...state, collectionContent: action.payload });
+      return (state = { ...state, collectionContent: action.payload as CollectionSanity });
     case ACTIONCONTENT.FASHIONCONTENT:
-      return (state = { ...state, fashionContent: action.payload });
+      return (state = { ...state, fashionContent: action.payload as FashionContentSanity });
     case ACTIONCONTENT.FOTTERCONTENT:
-      return (state = { ...state, footerContent: action.payload });
+      return (state = { ...state, footerContent: action.payload as FooterSanity });
     case ACTIONCONTENT.CARTCONTENT:
-      return (state = { ...state, cartContent: action.payload });
+      return (state = { ...state, cartContent: action.payload as CartSanity });
     case ACTIONCONTENT.CHECKOUTCONTENT:
-      return (state = { ...state, checkoutContent: action.payload });
+      return (state = { ...state, checkoutContent: action.payload  as CheckoutSanity });
     default:
       return state;
   }
@@ -373,27 +381,29 @@ function Context({ children }: ContextChild) {
       throw new Error(`${error}: API Not Found`);
     }
   };
+  
+  
   useEffect(() => {
+    const callFetchCloth = async () => {
+      const clothListForProductDetail: ClothList[] = await fetchProduct(
+        "http://localhost:3000/api/clothapi"
+      );
+      setProductList(clothListForProductDetail);
+      const menList: ClothList[] = clothListForProductDetail.filter(
+        (e) => e.productcategory === "men"
+      );
+      dispatchs({ type: ACTIONFILTER.LOADMENPROD, payload: menList });
+      const womenList = clothListForProductDetail.filter(
+        (e) => e.productcategory === "women"
+      );
+      dispatchs({ type: ACTIONFILTER.LOADWOMENPROD, payload: womenList });
+      const kidList = clothListForProductDetail.filter(
+        (e) => e.productcategory === "kid"
+      );
+      dispatchs({ type: ACTIONFILTER.LOADKIDPROD, payload: kidList });
+    };
     callFetchCloth();
   },[]);
-  const callFetchCloth = async () => {
-    const clothListForProductDetail: ClothList[] = await fetchProduct(
-      "http://localhost:3000/api/clothapi"
-    );
-    setProductList(clothListForProductDetail);
-    const menList: ClothList[] = clothListForProductDetail.filter(
-      (e) => e.productcategory === "men"
-    );
-    dispatchs({ type: ACTIONFILTER.LOADMENPROD, payload: menList });
-    const womenList = clothListForProductDetail.filter(
-      (e) => e.productcategory === "women"
-    );
-    dispatchs({ type: ACTIONFILTER.LOADWOMENPROD, payload: womenList });
-    const kidList = clothListForProductDetail.filter(
-      (e) => e.productcategory === "kid"
-    );
-    dispatchs({ type: ACTIONFILTER.LOADKIDPROD, payload: kidList });
-  };
   const prod = productList.map((e) => {
     return e.productprice;
   });
@@ -417,7 +427,7 @@ function Context({ children }: ContextChild) {
       ? backup
       : backup.filter((item) => item.productavaiableornot === isAvailable);
   };
-  const filterByOutStock = (backup: ClothList[], outOfStock: boolean) => {
+  const filterByOutStock = (backup: ClothList[], outOfStock: boolean|null) => {
     return outOfStock === null
       ? backup
       : backup.filter((item) => item.productavaiableornot === outOfStock);
@@ -444,7 +454,7 @@ function Context({ children }: ContextChild) {
       case ACTIONFILTER.INPUTFILTER:
         const { payload } = action;
         // If the input value is empty or null, return the full list of products
-        if (!payload.trim()) {
+        if (!(payload as string).trim() ) {
           return { ...state, product: state.backupProduct }; // Use a backup of the full product list
         }
         const filtMenInput = state.backupProduct.filter((e) => {
@@ -452,20 +462,20 @@ function Context({ children }: ContextChild) {
             .toLowerCase()
             .split(/\s+/)
             .join("")
-            .includes(payload.toLowerCase().split(/\s+/).join(""));
+            .includes((payload as string).toLowerCase().split(/\s+/).join(""));
         });
         return { ...state, product: filtMenInput };
 
       case ACTIONFILTER.LOADMENPROD:
         return {
           ...state,
-          product: action.payload,
-          backupProduct: action.payload,
+          product: action.payload as ClothList[],
+          backupProduct: action.payload as ClothList[],
         };
 
       case ACTIONFILTER.INPUTWOMENFILTER:
         // If the input value is empty or null, return the full list of products
-        if (!action.payload.trim()) {
+        if (!(action.payload as string).trim()) {
           return { ...state, womenProduct: state.womenBackupProduct }; // Use a backup of the full product list
         }
         const filtWomenInput = state.womenBackupProduct.filter((e) => {
@@ -473,20 +483,20 @@ function Context({ children }: ContextChild) {
             .toLowerCase()
             .split(/\s+/)
             .join("")
-            .includes(action.payload.toLowerCase().split(/\s+/).join(""));
+            .includes((action.payload as string).toLowerCase().split(/\s+/).join(""));
         });
         return { ...state, womenProduct: filtWomenInput };
 
       case ACTIONFILTER.LOADWOMENPROD:
         return {
           ...state,
-          womenProduct: action.payload,
-          womenBackupProduct: action.payload,
+          womenProduct: action.payload as ClothList[],
+          womenBackupProduct: action.payload as ClothList[],
         };
 
       case ACTIONFILTER.INPUTKIDFILTER:
         // If the input value is empty or null, return the full list of products
-        if (!action.payload.trim()) {
+        if (!(action.payload as string).trim()) {
           return { ...state, kidProduct: state.kidBackupProduct }; // Use a backup of the full product list
         }
         const filtKidInput = state.kidBackupProduct.filter((e) => {
@@ -494,15 +504,15 @@ function Context({ children }: ContextChild) {
             .toLowerCase()
             .split(/\s+/)
             .join("")
-            .includes(action.payload.toLowerCase().split(/\s+/).join(""));
+            .includes((action.payload as string).toLowerCase().split(/\s+/).join(""));
         });
         return { ...state, kidProduct: filtKidInput };
 
       case ACTIONFILTER.LOADKIDPROD:
         return {
           ...state,
-          kidProduct: action.payload,
-          kidBackupProduct: action.payload,
+          kidProduct: action.payload as ClothList[],
+          kidBackupProduct: action.payload as ClothList[],
         };
 
       case ACTIONFILTER.BTNFILTER:
@@ -511,7 +521,7 @@ function Context({ children }: ContextChild) {
             .toLowerCase()
             .split(/\s+/)
             .join("")
-            .includes(action.payload.toLowerCase().split(/\s+/).join(""));
+            .includes((action.payload as string).toLowerCase().split(/\s+/).join(""));
         });
         return { ...state, product: filtMenBtn };
 
@@ -521,7 +531,7 @@ function Context({ children }: ContextChild) {
             .toLowerCase()
             .split(/\s+/)
             .join("")
-            .includes(action.payload.toLowerCase().split(/\s+/).join(""));
+            .includes((action.payload as string).toLowerCase().split(/\s+/).join(""));
         });
         return { ...state, womenProduct: filtWomenBtn };
 
@@ -531,25 +541,25 @@ function Context({ children }: ContextChild) {
             .toLowerCase()
             .split(/\s+/)
             .join("")
-            .includes(action.payload.toLowerCase().split(/\s+/).join(""));
+            .includes((action.payload as string).toLowerCase().split(/\s+/).join(""));
         });
         return { ...state, kidProduct: filtKidBtn };
 
       case ACTIONFILTER.SIZEMENFILTER:
         const filtSizeMen = state.backupProduct.filter((e) => {
-          return e.productsizes.includes(action.payload);
+          return e.productsizes.includes((action.payload as string));
         });
         return { ...state, product: filtSizeMen };
 
       case ACTIONFILTER.SIZEWOMENFILTER:
         const filtSizeWomen = state.womenBackupProduct.filter((e) => {
-          return e.productsizes.includes(action.payload);
+          return e.productsizes.includes((action.payload as string));
         });
         return { ...state, womenProduct: filtSizeWomen };
 
       case ACTIONFILTER.SIZEKIDFILTER:
         const filtSizeKid = state.kidBackupProduct.filter((e) => {
-          return e.productsizes.includes(action.payload);
+          return e.productsizes.includes((action.payload as string));
         });
         return { ...state, kidProduct: filtSizeKid };
 
@@ -565,27 +575,27 @@ function Context({ children }: ContextChild) {
         // });
         return {
           ...state,
-          product: filterByColor(state.backupProduct, action.payload),
+          product: filterByColor(state.backupProduct, (action.payload as string)),
         };
 
       case ACTIONFILTER.COLORWOMENFILTER:
         return {
           ...state,
-          womenProduct: filterByColor(state.womenBackupProduct, action.payload),
+          womenProduct: filterByColor(state.womenBackupProduct, (action.payload as string)),
         };
 
       case ACTIONFILTER.COLORKIDFILTER:
         return {
           ...state,
-          kidProduct: filterByColor(state.kidBackupProduct, action.payload),
+          kidProduct: filterByColor(state.kidBackupProduct, (action.payload as string)),
         };
       case ACTIONFILTER.AVAILABLE:
         const newAvailableState =
           state.availableFilter === action.payload ? null : action.payload;
         return {
           ...state,
-          product: filterByAvailability(state.backupProduct, newAvailableState),
-          availableFilter: newAvailableState,
+          product: filterByAvailability(state.backupProduct, newAvailableState as boolean),
+          availableFilter: newAvailableState as boolean,
         };
 
       case ACTIONFILTER.WOMENAVAILABLE:
@@ -595,9 +605,9 @@ function Context({ children }: ContextChild) {
           ...state,
           womenProduct: filterByAvailability(
             state.womenBackupProduct,
-            newAvailableWomenState
+            newAvailableWomenState as boolean
           ),
-          availableWomenFilter: newAvailableWomenState,
+          availableWomenFilter: newAvailableWomenState as boolean,
         };
 
       case ACTIONFILTER.KIDAVAILABLE:
@@ -607,9 +617,9 @@ function Context({ children }: ContextChild) {
           ...state,
           kidProduct: filterByAvailability(
             state.kidBackupProduct,
-            newAvailableKidState
+            newAvailableKidState as boolean
           ),
-          availableKidFilter: newAvailableKidState,
+          availableKidFilter: newAvailableKidState as boolean,
         };
 
       case ACTIONFILTER.OUTOFSTOCK:
@@ -618,8 +628,8 @@ function Context({ children }: ContextChild) {
           state.availableFilter === action.payload ? null : action.payload;
         return {
           ...state,
-          product: filterByOutStock(state.backupProduct, newOutOfStockState),
-          availableFilter: newOutOfStockState,
+          product: filterByOutStock(state.backupProduct, newOutOfStockState as boolean|null),
+          availableFilter: newOutOfStockState as boolean|null,
         };
       case ACTIONFILTER.OUTOFSTOCKWOMEN:
         // Toggle between false and null (all products)
@@ -630,9 +640,9 @@ function Context({ children }: ContextChild) {
           ...state,
           womenProduct: filterByOutStock(
             state.womenBackupProduct,
-            newOutOfStockWomen
+            newOutOfStockWomen as boolean | null
           ),
-          availableWomenFilter: newOutOfStockWomen,
+          availableWomenFilter: newOutOfStockWomen as boolean | null,
         };
       case ACTIONFILTER.OUTOFSTOCKKID:
         // Toggle between false and null (all products)
@@ -642,24 +652,24 @@ function Context({ children }: ContextChild) {
           ...state,
           kidProduct: filterByOutStock(
             state.kidBackupProduct,
-            newOutOfStockKid
+            newOutOfStockKid as boolean | null
           ),
-          availableKidFilter: newOutOfStockKid,
+          availableKidFilter: newOutOfStockKid as boolean | null,
         };
       case ACTIONFILTER.PRICEFILTER:
         return {
           ...state,
-          product: filterByPrice(state.backupProduct, action.payload),
+          product: filterByPrice(state.backupProduct, (action.payload as string)),
         };
       case ACTIONFILTER.PRICEWOMENFILTER:
         return {
           ...state,
-          womenProduct: filterByPrice(state.womenBackupProduct, action.payload),
+          womenProduct: filterByPrice(state.womenBackupProduct, (action.payload as string)),
         };
       case ACTIONFILTER.PRICEKIDFILTER:
         return {
           ...state,
-          kidProduct: filterByPrice(state.kidBackupProduct, action.payload),
+          kidProduct: filterByPrice(state.kidBackupProduct, (action.payload as string)),
         };
 
       default:
@@ -774,13 +784,14 @@ function Context({ children }: ContextChild) {
   //   return e;
   // });
   //  console.log(collectionProd)
-  const collectionAll: ClothList[] = [];
-  const findCateg = (categ: string) => {
-    const filterProd = productList.filter((e) => e.productcategory === categ);
-    const findProd = filterProd.find((e, i) => i > 2);
-    return findProd;
-  };
+  
   useEffect(() => {
+    const collectionAll: ClothList[] = [];
+    const findCateg = (categ: string) => {
+      const filterProd = productList.filter((e) => e.productcategory === categ);
+      const findProd = filterProd.find((e, i) => i > 2);
+      return findProd;
+    };
     // Extract one product from each category
     const menFind = findCateg("men");
     const womenFind = findCateg("women");
