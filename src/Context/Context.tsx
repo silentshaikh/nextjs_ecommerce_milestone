@@ -382,7 +382,8 @@ function Context({ children }: ContextChild) {
     }
   };
   
-  
+  console.log(process.env.NEXT_PUBLIC_CLOTH_API)
+  // NEXT_PUBLIC_SANITY_PROJECT_ID
   useEffect(() => {
     const callFetchCloth = async () => {
       const clothListForProductDetail: ClothList[] = await fetchProduct(
