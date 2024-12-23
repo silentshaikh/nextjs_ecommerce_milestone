@@ -6,6 +6,5 @@ function WeekControl() {
       <HeroContBtn/>
     </div>
   )
-}
-
+};
 export default WeekControl

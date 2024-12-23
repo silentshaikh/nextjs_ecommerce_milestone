@@ -1,5 +1,5 @@
 'use client';
-import { removDuplicateTypeKid, rubikBuble } from '@/utils/Helper/helper';
+import { rubikBuble } from '@/utils/Helper/helper';
 import ProductContent from '../ProductContent/ProductContent';
 import ProductKidList from '../ProductKidList/ProductKidList';
 import useClothContext from '@/Hooks/ClothContext/ClothContext';

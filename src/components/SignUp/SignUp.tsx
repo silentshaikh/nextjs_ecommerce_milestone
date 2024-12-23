@@ -8,6 +8,5 @@ function SignUp() {
       <AiOutlineUser className='text-2xl'/>
     </div>
   )
-}
-
+};
 export default SignUp

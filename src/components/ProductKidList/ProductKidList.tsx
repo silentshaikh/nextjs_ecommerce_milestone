@@ -3,19 +3,17 @@ import {  poppins, rubikBuble } from '@/utils/Helper/helper';
 import Card from '../Card/Card';
 import useClothContext from '@/Hooks/ClothContext/ClothContext';
 import { ClothList } from '@/utils/Type/type';
-function ProductKidList({productKid}:{productKid:ClothList[] | undefined}) {
-  const {inputList,kidProduct} = useClothContext();
-  //find product
-
+function ProductKidList({}:{productKid:ClothList[] | undefined}) {
+  const {kidProduct} = useClothContext();
   if(kidProduct){
     return (
       <section className={`${poppins.className} flex justify-evenly items-center flex-wrap`}>
         {
           kidProduct.length > 0 ?
-        (kidProduct.map((e,i) => {
+        (kidProduct.map((e) => {
           return(
-              <Card key={e.id} color={e.color} name={e.name} img={e.img} id={e.id} category={e.category} imgList={e.imgList}
-              size={e.size} price={e.price} type={e.type} isAvailable={e.isAvailable}/>
+            <Card  key={e.productid} productcolors={e.productcolors} productname={e.productname} productimage={e.productimage} productid={e.productid} productcategory={e.productcategory} productimagelist={e.productimagelist}
+            productsizes={e.productsizes} productprice={e.productprice}  producttype={e.producttype} productavaiableornot={e.productavaiableornot}/>
           );
         }))
         : (<div className={` ${rubikBuble.className} h-screen flex items-center`}> 

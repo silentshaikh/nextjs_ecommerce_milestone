@@ -1,25 +1,175 @@
 import { ChangeEvent, FormEvent, MutableRefObject, ReactNode } from "react";
-import { Interface } from "readline";
+// import { Interface } from "readline";
+export interface List{
+  name:string;
+  link:string;
+}
 
 //Navlist
 export interface NavList {
-  name: string;
-  link: string;
+  itemid:number;
+  listitem: string;
+  itemlink: string;
+  _key:string;
 }
 
-//All Product
-export interface ClothList {
-  name: string;
-  price: number;
-  img: string;
-  size: string[];
-  color: string[];
-  imgList: string[];
-  category: string;
-  id: number;
-  type: string;
-  isAvailable: boolean;
+//Header Content
+
+export interface HeaderSanity{
+  logo: string; // URL of the logo
+  titlelogo: string; // Title of the logo
+  navtoggicon: string; // URL of the navigation toggle icon
+  titletoggicon: string; // Title of the toggle icon
+  navlist: NavList[]; // Array of navigation items
+  cartname: string; // Name of the cart
+  cartquantity: number; // Quantity of items in the cart
+  cartimgone: string; // URL of the first cart image
+  cartimgtwo: string;
 }
+
+//Hero Content
+export interface HeroImgItem {
+  imageid: string; // Unique key for the image item
+  imagename: string; // URL of the hero image
+  imagetitle: string; // Alt text for the hero image
+}
+export interface HeroSanity {
+  subheading: string; // Subheading text (e.g., "Summer 2024")
+  mainheading: string; // Main heading text (e.g., "NEW COLLECTION")
+  heroimglist: HeroImgItem[]; // List of hero image items
+  heronavlist: NavList[]; // List of hero navigation items
+  inputimage: string; // URL for the input image (e.g., a search icon)
+  inputplaceholder: string; // Placeholder text for the input (e.g., "Search")
+  herobutton: string; // Text for the hero button (e.g., "Go T")
+}
+
+//New Week Content
+export interface WeekImageItem {
+  imageid: number; // Unique identifier for the image
+  imagetitle: string; // Title of the image (e.g., "Embroidered Shirt")
+  producttype: string; // Type of product (e.g., "Shirt", "T-Shirt")
+  imagename: string; // URL of the image
+}
+
+export interface WeekSanity {
+  headincount: number; // Headline count (e.g., 50)
+  weekheading: string; // Heading for the week (e.g., "NEW THIS WEEK")
+  weekimglist: WeekImageItem[]; // Array of images for the week
+}
+
+//XIV Collection Content
+export interface CollectionNavItem {
+  itemid: number; // Unique identifier for the navigation item
+  listitem: string; // The name of the list item (e.g., "ALL", "MEN", "WOMEN", "KID")
+}
+
+export interface CollectionSanity {
+  collectsort: string; // Sorting method (e.g., "Sorts")
+  moretoless: string; // Sorting option (e.g., "More to less")
+  collectionheading: string; // Heading for the collection (e.g., "XIV COLLECTION 24-25")
+  lesstomore: string; // Sorting option (e.g., "Less to more")
+  collectionnav: CollectionNavItem[]; // Array of navigation items
+  collectfilter: string; // Filters label (e.g., "Filters")
+}
+
+//Fashion Collection Content
+export interface FashionImageItem {
+  imageid: number; // Unique identifier for the image
+  imagetitle: string; // Title of the image (e.g., "Embroidered Shirt")
+  imagename: string;
+}
+
+export interface FashionContentSanity {
+  fashioncontent: string; // Text content for the fashion description
+  fashionheading: string; // Heading for the fashion section (e.g., "OUR APPROACH TO FASHION DESIGN")
+  fashionimglist: FashionImageItem[]; // Array of fashion image items
+}
+
+//Fotter Content
+export interface FooterSanity {
+  languageheading: string; // Heading for the language section (e.g., "LANGUAGE")
+  infoheading: string; // Heading for the info section (e.g., "INFO")
+  infolist: CollectionNavItem[]; // Array of information items
+  languagelist: CollectionNavItem[]; // Array of language items
+}
+
+//Cart Content
+export interface CartSanity {
+  total: string; // Total price of items in the cart
+  cartbutton: string; // Text for the cart button (e.g., "Proceed to Checkout")
+  shipping: string; // Shipping details or cost (e.g., "Free Shipping")
+  terms: string; // Terms and conditions text
+  subtotal: string; // Subtotal price of items in the cart
+  cartheading: string; // Heading for the cart section (e.g., "Your Cart")
+}
+
+//Checkout Content
+export interface CheckoutSanity {
+  citylabel: string; // Label for the city input field (e.g., "City")
+  addresslabel: string; // Label for the address input field (e.g., "Enter Your Address")
+  postalcodelabel: string; // Label for the postal code input field (e.g., "Postal Code")
+  contactinfo: string; // Label or heading for the contact info section (e.g., "contact info")
+  firstnamelabel: string; // Label for the first name input field (e.g., "First Name")
+  shippingbutton: string; // Text for the shipping button (e.g., "Shipping")
+  statelabel: string; // Label for the state/region input field (e.g., "Enter Your State/Region")
+  shippingaddress: string; // Label or heading for the shipping address section (e.g., "shipping address")
+  checkoutheading: string; // Heading for the checkout section (e.g., "CHECKOUT")
+  emaillabel: string; // Label for the email input field (e.g., "Enter Your Email")
+  lastnamelabel: string; // Label for the last name input field (e.g., "Last Name")
+  numberlabel: string; // Label for the phone number input field (e.g., "Enter your Number")
+  checkoutlist: CollectionNavItem[]; // Array of items in the checkout navigation list
+}
+
+export interface WebContentReducer {
+  headerContent: HeaderSanity;
+  heroContent:HeroSanity;
+  weekContent:WeekSanity;
+  collectionContent:CollectionSanity;
+  fashionContent:FashionContentSanity;
+  footerContent:FooterSanity;
+  cartContent:CartSanity;
+  checkoutContent:CheckoutSanity;
+};
+
+export interface WebContentAction{
+  type:string;
+  payload:any;
+};
+
+//All Product
+// export interface ClothList {
+//   name: string;
+//   price: number;
+//   img: string;
+//   size: string[];
+//   color: string[];
+//   imgList: string[];
+//   category: string;
+//   id: number;
+//   type: string;
+//   isAvailable: boolean;
+// }
+interface ProductImage {
+  imageid: number; // Unique identifier for the image
+  productimage: string; // URL of the product image
+}
+
+export interface ClothList {
+  productname: string; // Name of the product (e.g., "Basic Slim Fit T-Shirt")
+  productid: string; // Unique identifier or slug for the product (e.g., "basic-slim-fit-t-shirt")
+  productsizes: string[]; // Array of available sizes (e.g., ["XS", "S", "L", "XL", "XXL"])
+  producttype: string; // Type of the product (e.g., "t-shirt")
+  productavaiableornot: boolean | null; // Availability status of the product, null if unknown
+  productcolors: {
+    _key:string;
+    hex:string
+  }[]; // Array of available colors for the product
+  productprice: number; // Price of the product
+  productcategory: string; // Category of the product (e.g., "men")
+  productimage: string; // Main product image URL
+  productimagelist: ProductImage[]; // Array of additional product images
+}
+
 
 //Hero List
 export interface HeroList {
@@ -51,7 +201,7 @@ export interface ProductInpObj {
 //Product Page Img
 export interface ProductImages {
   img: string;
-  imgList: string[];
+  imgList: ProductImage[];
   name: string;
 }
 
@@ -61,10 +211,13 @@ export interface ProductCardSizeType {
 }
 //Product Page Context
 export interface ProductContentType {
-  price: string;
+  price: number;
   name: string;
   size: string[];
-  color: string[];
+  color: {
+    _key:string;
+    hex:string
+  }[];
 }
 
 //Product Search Type
@@ -78,14 +231,14 @@ export interface ProductContType {
   name: string;
   removDuplicateBtn: string[];
   categ:string;
-  btnFilter:(type:string,categ:string) => void;
+  btnFilter:(type:string) => void;
 }
 
 //Card Type for Cart Page
 export interface TypeForCartCard {
   name: string;
   category: string;
-  price: string;
+  price: number;
   img: string;
 }
 
@@ -107,7 +260,7 @@ export interface CheckLabel {
 //checkout card tyoe
 export interface CheckOutCard {
   name: string;
-  price: string;
+  price: number;
   img: string;
   color: string;
   size: string;
@@ -118,7 +271,7 @@ export interface CheckOutCardDetail {
   name: string;
   size: string;
   color: string;
-  price: string;
+  price: number;
 }
 //side Bar Available
 export interface TypeForAvailable {
@@ -177,6 +330,14 @@ export interface ContextType {
   // price:string;
   // womenPrice:string;
   priceInp:priceFilter;
+  headerContent: HeaderSanity;
+  heroContent:HeroSanity;
+  weekContent:WeekSanity;
+  collectionContent:CollectionSanity;
+  fashionContent:FashionContentSanity;
+  footerContent:FooterSanity;
+  cartContent:CartSanity;
+  checkoutContent:CheckoutSanity;
   onPriceFilter:(e:ChangeEvent<HTMLInputElement>) => void;
   onPriceFilterWomen:(e:ChangeEvent<HTMLInputElement>) => void;
     onPriceFilterKid:(e:ChangeEvent<HTMLInputElement>) => void;
@@ -188,9 +349,9 @@ export interface ContextType {
   selectColr: (bgColor: string) => void;
   toggleAgainSide: (e: boolean | undefined) => void;
   fetchProductData: (e: string) => Promise<ClothList[] | undefined>;
-  onHandleFilter: (type:string,categ:string) => void;
-  onHandleWomenFilter: (type:string,categ:string) => void;
-  onHandleKidFilter: (type:string,categ:string) => void;
+  onHandleFilter: (type:string) => void;
+  onHandleWomenFilter: (type:string) => void;
+  onHandleKidFilter: (type:string) => void;
   onProductSearch: (e:FormEvent<HTMLFormElement>) => void;
   onSizeFilter: (size:string) => void;
   onSizeWomenFilter: (size:string) => void;
@@ -233,4 +394,4 @@ export interface ProductReducer{
 export interface ProdAction{
   type:string;
   payload:any;
-}
+};

@@ -1,7 +1,7 @@
 'use client';
 import ProductMenList from '../ProductMenList/ProductMenList';
 import ProductContent from '../ProductContent/ProductContent';
-import { removDuplicateType, rubikBuble } from '@/utils/Helper/helper';
+import {  rubikBuble } from '@/utils/Helper/helper';
 import useClothContext from '@/Hooks/ClothContext/ClothContext';
 import { ClothList } from '@/utils/Type/type';
 function ProductMenChild({productMen}:{productMen:ClothList[]| undefined}) {

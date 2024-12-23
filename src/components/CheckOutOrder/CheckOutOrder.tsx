@@ -1,6 +1,6 @@
 import React from 'react'
 import CheckOutOrderList from '../CheckOutOrderList/CheckOutOrderList'
-import CartAmountDetail from '../CartAmountDetail/CartAmountDetail'
+// import CartAmountDetail from '../CartAmountDetail/CartAmountDetail'
 import CheckOutAmount from '../CheckOutAmount/CheckOutAmount'
 
 function CheckOutOrder() {

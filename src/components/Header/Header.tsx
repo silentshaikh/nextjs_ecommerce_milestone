@@ -1,4 +1,4 @@
-import Navbar from '../Navbar/Navbar';
+// import Navbar from '../Navbar/Navbar';
 import Logo from '../Logo/Logo';
 import CartSignUpBox from '../CartSignUpBox/CartSignUpBox';
 import { workSans } from '@/utils/Helper/helper';

@@ -1,12 +1,12 @@
 'use client';
-import { menProduct,poppins, rubikBuble, workSans } from '@/utils/Helper/helper'
+import { poppins, rubikBuble } from '@/utils/Helper/helper'
 import React from 'react'
 import Card from '../Card/Card';
-import Link from 'next/link';
+// import Link from 'next/link';
 import useClothContext from '@/Hooks/ClothContext/ClothContext';
 import { ClothList } from '@/utils/Type/type';
-function ProductMenList({productMen}:{productMen:ClothList[]| undefined}) {
-  const {inputList,isType,product} = useClothContext();
+function ProductMenList({}:{productMen:ClothList[]| undefined}) {
+  const {product} = useClothContext();
   // const productMen = await fetchProductData(`http://localhost:3000/api/men`);
   // let {meninput} = inputList;
   // const searchProd = productMen?.filter((e) => {
@@ -18,10 +18,10 @@ function ProductMenList({productMen}:{productMen:ClothList[]| undefined}) {
       <section className={`${poppins.className} flex justify-evenly items-center flex-wrap`}>
         {
           product.length>0 ?
-        (product.map((e,i) => {
+        (product.map((e) => {
           return(
-              <Card  key={e.id} color={e.color} name={e.name} img={e.img} id={e.id} category={e.category} imgList={e.imgList}
-              size={e.size} price={e.price}  type={e.type} isAvailable={e.isAvailable}/>
+              <Card  key={e.productid} productcolors={e.productcolors} productname={e.productname} productimage={e.productimage} productid={e.productid} productcategory={e.productcategory} productimagelist={e.productimagelist}
+              productsizes={e.productsizes} productprice={e.productprice}  producttype={e.producttype} productavaiableornot={e.productavaiableornot}/>
           );
         }))
         : (<div className={` ${rubikBuble.className} h-screen flex items-center`}> 

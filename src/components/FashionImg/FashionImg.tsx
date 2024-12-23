@@ -1,14 +1,14 @@
-import { FasionDesign } from '@/utils/Type/type'
+import { FashionImageItem} from '@/utils/Type/type'
 import Image from 'next/image'
 import React from 'react'
 
-function FashionImg({id,img,alignstyle}:FasionDesign) {
+function FashionImg({imageid,imagename,imagetitle}:FashionImageItem) {
   return (
   <Image 
   className=''
-  key={id}
-  src={`/images/${img}`}
-  alt="Fashion Design"
+  key={imageid}
+  src={imagename}
+  alt={imagetitle}
   height={304}
   width={366}
   />

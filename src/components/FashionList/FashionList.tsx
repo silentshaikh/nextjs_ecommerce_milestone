@@ -1,13 +1,15 @@
 'use client';
-import { fashionDesign } from "@/utils/Helper/helper"
+// import { fashionDesign } from "@/utils/Helper/helper"
 import FashionImg from "../FashionImg/FashionImg";
+import useClothContext from "@/Hooks/ClothContext/ClothContext";
 
 function FashionList() {
+  const {fashionContent} = useClothContext();
   return (
     <div className="flex justify-evenly items-center gap-3 flex-wrap">
-      {fashionDesign.map((e,i) => {
+      {fashionContent.fashionimglist.map((e) => {
         return (
-            <FashionImg key={i} img={e.img} id={e.id} alignstyle={e.alignstyle}/>
+            <FashionImg key={e.imageid} imagename={e.imagename} imageid={e.imageid} imagetitle={e.imagetitle} />
         );
       })}
     </div>

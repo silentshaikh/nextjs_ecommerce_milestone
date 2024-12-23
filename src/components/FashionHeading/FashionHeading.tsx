@@ -1,8 +1,11 @@
+'use client';
+import useClothContext from "@/Hooks/ClothContext/ClothContext";
 
 function FashionHeading() {
+  const {fashionContent} = useClothContext();
   return (
     <h3 className="text-3xl font-bold max-[630px]:text-center">
-      OUR APPROACH TO FASHION DESIGN
+      {fashionContent.fashionheading}
     </h3>
   )
 }

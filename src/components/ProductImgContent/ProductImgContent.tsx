@@ -18,7 +18,7 @@ short sleeves. Button-up front.
         <div className='flex gap-1 pb-3'>
         {color.map((e) => {
             return(
-                <button onClick={() => selectColr(e)} key={e} style={{backgroundColor:`#${e}`}} className={`${colr === e ? 'border-4 border-[#9b9a9a]': ''}  h-[50px] w-[50px] max-[870px]:size-[35px] max-[700px]:size-[45px] max-[380px]:size-[40px] max-[320px]:size-[35px] max-[300px]:size-[30px]`}></button>
+                <button onClick={() => selectColr(e.hex)} key={e._key} style={{backgroundColor:`${e.hex}`}} className={`${colr === e.hex ? 'border-4 border-[#9b9a9a]': ''}  h-[50px] w-[50px] max-[870px]:size-[35px] max-[700px]:size-[45px] max-[380px]:size-[40px] max-[320px]:size-[35px] max-[300px]:size-[30px]`}></button>
             );
         })}
         </div>

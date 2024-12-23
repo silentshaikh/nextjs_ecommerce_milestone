@@ -1,9 +1,12 @@
-import React from 'react'
+'use client';
+
+import useClothContext from "@/Hooks/ClothContext/ClothContext";
 
 function CollectOne() {
+  const {collectionContent} = useClothContext()
   return (
     <h5  className='max-[500px]:text-sm'>
-      Filters(&#43;)
+      {collectionContent.collectfilter}(&#43;)
     </h5>
   )
 }

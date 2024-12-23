@@ -1,6 +1,6 @@
 import { TypeForCartCard } from '@/utils/Type/type'
 import Image from 'next/image'
-function CartCard({img,name,price,category}:TypeForCartCard) {
+function CartCard({name,price,category}:TypeForCartCard) {
   return (
     <>
         <div  className='  flex flex-col items-start  '>

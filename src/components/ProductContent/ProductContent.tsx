@@ -1,5 +1,5 @@
 'use client';
-import { ProductContType, ProductInputType, ProductSearchType } from '@/utils/Type/type';
+import { ProductContType } from '@/utils/Type/type';
 import ProductHeading from '../ProductHeading/ProductHeading'
 import ProductSearch from '../ProductSearch/ProductSearch'
 

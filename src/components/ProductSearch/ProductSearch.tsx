@@ -1,5 +1,5 @@
 'use client';
-import { ProductContType, ProductInputType, ProductSearchType } from '@/utils/Type/type';
+import { ProductContType} from '@/utils/Type/type';
 import ProductBtn from '../ProductBtn/ProductBtn';
 import { usePathname } from 'next/navigation';
 import ProductMenForm from '../ProductMenForm/ProductMenForm';

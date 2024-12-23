@@ -1,6 +1,6 @@
 'use client';
 import useClothContext from "@/Hooks/ClothContext/ClothContext";
-import { poppins, workSans } from "@/utils/Helper/helper";
+import {  workSans } from "@/utils/Helper/helper";
 import { ProductInputType } from "@/utils/Type/type";
 function ProductMenInput({name}:ProductInputType) {
   const {inputList,onInputHandler} = useClothContext()

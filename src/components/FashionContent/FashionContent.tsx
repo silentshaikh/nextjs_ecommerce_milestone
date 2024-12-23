@@ -1,8 +1,9 @@
-import React from 'react'
+
 import FashionHeading from '../FashionHeading/FashionHeading'
 import FashionPara from '../FashionPara/FashionPara'
 
 function FashionContent() {
+  
   return (
     <div className='flex justify-center flex-col items-center pb-10'>
       <FashionHeading/>

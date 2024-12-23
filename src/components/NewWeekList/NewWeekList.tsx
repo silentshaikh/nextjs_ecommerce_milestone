@@ -1,14 +1,15 @@
 'use client';
-import { homeList } from "@/utils/Helper/helper"
-import Card from "../Card/Card"
+// import { homeList } from "@/utils/Helper/helper"
 import {poppins} from "@/utils/Helper/helper"
 import NewWeekCard from "../NewWeekCard/NewWeekCard"
+import useClothContext from "@/Hooks/ClothContext/ClothContext";
 function NewWeekList() {
+  const {weekContent} = useClothContext();
   return (
     <div className={`${poppins.className}  py-10 flex  justify-evenly items-center flex-wrap`}>
-      {homeList.map((e,i) => {
+      {weekContent.weekimglist.map((e) => {
         return(
-            <NewWeekCard key={e.id ? e.id+i : ""}  name={e.name} img={e.img} size={e.size} color={e.color} imgList={e.imgList} id={e.id} category={e.category} price={e.price} />
+            <NewWeekCard key={e.imageid} imageid={e.imageid} imagename={e.imagename} imagetitle={e.imagetitle} producttype={e.producttype} />
         )
       })}
     </div>

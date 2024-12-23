@@ -1,7 +1,7 @@
 'use client';
 import useClothContext from '@/Hooks/ClothContext/ClothContext';
 import { RiArrowLeftSLine} from 'react-icons/ri';
-import { poppins } from '@/utils/Helper/helper';
+// import { poppins } from '@/utils/Helper/helper';
 function SideBarHeading() {
   const {paddRemove , sideBarToggle,toggleAgainSide} = useClothContext()
   const onSideBarTogg = () => {

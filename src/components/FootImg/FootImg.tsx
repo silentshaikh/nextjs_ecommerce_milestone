@@ -1,7 +1,10 @@
+'use client';
+// import useClothContext from '@/Hooks/ClothContext/ClothContext';
 import Image from 'next/image'
-import React from 'react'
+
 
 function FootImg() {
+  // const {footerContent} = useClothContext();
   return (
     <>
      <Image

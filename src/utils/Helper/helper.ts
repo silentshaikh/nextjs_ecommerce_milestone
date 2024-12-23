@@ -1,4 +1,4 @@
-import { ClothList, FasionDesign, HeroList, NavList } from "../Type/type";
+import { ClothList, FasionDesign, HeroList, List } from "../Type/type";
 import {Orbitron,Creepster,Poppins} from 'next/font/google';
 //export font 
 export const workSans = Orbitron({ subsets: ['latin'], weight: ['400'],display: 'swap',  });
@@ -9,36 +9,36 @@ export const poppins = Poppins({
     display: 'swap', 
 });
 //Nav List
-export const navList:NavList[] = [
-    {
-        name:"Home",
-        link:"/"
-    },
-    {
-        name:"collection",
-        link:"/collection"
-    },
-    {
-        name:"New",
-        link:"/checkout"
-    },
-];
+// export const navList:NavList[] = [
+//     {
+//         name:"Home",
+//         link:"/"
+//     },
+//     {
+//         name:"collection",
+//         link:"/collection"
+//     },
+//     {
+//         name:"New",
+//         link:"/checkout"
+//     },
+// ];
 
 //Hero List
-export const heroNav:NavList[] = [
-    {
-        name:"Men",
-        link:"/men"
-    },
-    {
-        name:"Women",
-        link:"/women"
-    },
-    {
-        name:"Kids",
-        link:"/kid"
-    },
-];
+// export const heroNav:NavList[] = [
+//     {
+//         name:"Men",
+//         link:"/men"
+//     },
+//     {
+//         name:"Women",
+//         link:"/women"
+//     },
+//     {
+//         name:"Kids",
+//         link:"/kid"
+//     },
+// ];
 //All Product List
 // export const clothList:ClothList[] = [
 //     {
@@ -676,58 +676,58 @@ export const heroList:HeroList[] =[
 ];
 
 //Home Page List
-export const homeList:ClothList[] = [
+// export const homeList:ClothList[] = [
     
-        {
-            name:"Embroidered  Shirt",
-            id:new Date().getTime(),
-            category:"Shirt",
-            type:'t-shirt',
-            img:"Group 66.jpg",
-            price:29.7,
-            isAvailable:true,
-            size:["XS","S","M","L","XL","XXL"],
-            color:["B9C1E8","FFFFFF","A6D6CA","1E1E1E","A9A9A9","D9D9D9"],
-            imgList:["Group 67.jpg","Group 66.jpg","226c8564dbe8a170df267ff540cd07b906382a54.avif","97894b48f38b24954933335875fa6ab07316e751.avif"]
-        },
-        {
-            name:"Basic Slim Fit T-Shirt",
-            id:new Date().getTime(),
-            category:"T-Shirt",
-            type:'t-shirt',
-            isAvailable:true,
-            img:"Group 67.jpg",
-            price:29.75,
-            size:["XS","S","M","L","XL","XXL"],
-            color:["B9C1E8","FFFFFF","A6D6CA","1E1E1E","A9A9A9","D9D9D9"],
-            imgList:["Group 67.jpg","Group 68.jpg","226c8564dbe8a170df267ff540cd07b906382a54.avif","97894b48f38b24954933335875fa6ab07316e751.avif"]
-        },
-        {
-            name:"Blurred Print T-Shirt",
-            id:new Date().getTime(),
-            category:"T-Shirt",
-            type:'t-shirt',
-            isAvailable:true,
-            img:"Group 68.jpg",
-            price:29.75,
-            size:["XS","S","M","L","XL","XXL"],
-            color:["B9C1E8","FFFFFF","A6D6CA","1E1E1E","A9A9A9","D9D9D9"],
-            imgList:["Group 67.jpg","Group 68.jpg","226c8564dbe8a170df267ff540cd07b906382a54.avif","97894b48f38b24954933335875fa6ab07316e751.avif"]
-        },
-        {
-            name:"Full Sleeve Zipper",
-            isAvailable:true,
-            id:new Date().getTime(),
-            category:"T-Shirt",
-            type:'t-shirt',
-            img:"Group 69 (1).jpg",
-            price:29.75,
-            size:["XS","S","M","L","XL","XXL"],
-            color:["B9C1E8","FFFFFF","A6D6CA","1E1E1E","A9A9A9","D9D9D9"],
-            imgList:["Group 66.jpg","Group 69.jpg","226c8564dbe8a170df267ff540cd07b906382a54.avif","97894b48f38b24954933335875fa6ab07316e751.avif"]
-        },
+//         {
+//             name:"Embroidered  Shirt",
+//             id:new Date().getTime(),
+//             category:"Shirt",
+//             type:'t-shirt',
+//             img:"Group 66.jpg",
+//             price:29.7,
+//             isAvailable:true,
+//             size:["XS","S","M","L","XL","XXL"],
+//             color:["B9C1E8","FFFFFF","A6D6CA","1E1E1E","A9A9A9","D9D9D9"],
+//             imgList:["Group 67.jpg","Group 66.jpg","226c8564dbe8a170df267ff540cd07b906382a54.avif","97894b48f38b24954933335875fa6ab07316e751.avif"]
+//         },
+//         {
+//             name:"Basic Slim Fit T-Shirt",
+//             id:new Date().getTime(),
+//             category:"T-Shirt",
+//             type:'t-shirt',
+//             isAvailable:true,
+//             img:"Group 67.jpg",
+//             price:29.75,
+//             size:["XS","S","M","L","XL","XXL"],
+//             color:["B9C1E8","FFFFFF","A6D6CA","1E1E1E","A9A9A9","D9D9D9"],
+//             imgList:["Group 67.jpg","Group 68.jpg","226c8564dbe8a170df267ff540cd07b906382a54.avif","97894b48f38b24954933335875fa6ab07316e751.avif"]
+//         },
+//         {
+//             name:"Blurred Print T-Shirt",
+//             id:new Date().getTime(),
+//             category:"T-Shirt",
+//             type:'t-shirt',
+//             isAvailable:true,
+//             img:"Group 68.jpg",
+//             price:29.75,
+//             size:["XS","S","M","L","XL","XXL"],
+//             color:["B9C1E8","FFFFFF","A6D6CA","1E1E1E","A9A9A9","D9D9D9"],
+//             imgList:["Group 67.jpg","Group 68.jpg","226c8564dbe8a170df267ff540cd07b906382a54.avif","97894b48f38b24954933335875fa6ab07316e751.avif"]
+//         },
+//         {
+//             name:"Full Sleeve Zipper",
+//             isAvailable:true,
+//             id:new Date().getTime(),
+//             category:"T-Shirt",
+//             type:'t-shirt',
+//             img:"Group 69 (1).jpg",
+//             price:29.75,
+//             size:["XS","S","M","L","XL","XXL"],
+//             color:["B9C1E8","FFFFFF","A6D6CA","1E1E1E","A9A9A9","D9D9D9"],
+//             imgList:["Group 66.jpg","Group 69.jpg","226c8564dbe8a170df267ff540cd07b906382a54.avif","97894b48f38b24954933335875fa6ab07316e751.avif"]
+//         },
     
-];
+// ];
 
 //Fashion Design
 export const fashionDesign:FasionDesign[] = [
@@ -772,7 +772,7 @@ const fetchCloth = async () => {
         const productData:ClothList[] = await fetchProduct.json();
         clothList = productData;
     } catch (error) {
-        throw new Error('Api not Found');
+        throw new Error(`${error}: 'Api not Found'`);
     }
 };
 // const clothList =  await fetchCloth();
@@ -782,23 +782,23 @@ const fetchCloth = async () => {
 
 //Filter the Men Product
 export  const menProduct = clothList.filter((e) => {
-    return e.category === "men";
+    return e.productcategory === "men";
 });
 
 //Map Type in Men Product
 const menProductType = menProduct.map((e) => {
-    return e.type
+    return e.producttype
 });
 //Remove Duplicate 
 export const removDuplicateType:string[] = [... new Set(menProductType)];
 
 //Filter the Women Product
 export  const womenProduct = clothList.filter((e) => {
-    return e.category === "women";
+    return e.productcategory === "women";
 });
 //Map Type in Women Product
 const womenProductType = womenProduct.map((e) => {
-    return e.type;
+    return e.producttype;
 });
 //Remove Duplicate 
 export const removDuplicateTypeWomen:string[] = [... new Set(womenProductType)];
@@ -806,11 +806,11 @@ export const removDuplicateTypeWomen:string[] = [... new Set(womenProductType)];
 
 //Filter the Kids Product
 export  const kidProduct = clothList.filter((e) => {
-    return e.category === "kid";
+    return e.productcategory === "kid";
 });
 //Map Type in Women Product
 const kidProductType = kidProduct.map((e) => {
-    return e.type;
+    return e.producttype;
 });
 //Remove Duplicate 
 export const removDuplicateTypeKid:string[] = [... new Set(kidProductType)];
@@ -820,7 +820,7 @@ export const removDuplicateTypeKid:string[] = [... new Set(kidProductType)];
 export const sideBarSize:string[] = ["XS","S","M","L","XL","XXL"];
 
 //Header For Checkout
-export const headerCheckout:NavList[] = [
+export const headerCheckout:List[] = [
     {
         name:'information',
         link:'/information',
@@ -836,14 +836,14 @@ export const headerCheckout:NavList[] = [
 ];
 
 export const cart:ClothList = {
-    name:"Loose Fit Vintage-Look Printed T-Shirt",
-    id:new Date().getTime(),
-    category:"men",
-    type:'t-shirt',
-    isAvailable:true,
-    img:"f80e19d6e72a4402edde629815740a9943f52434.avif",
-    price:18.00,
-    size:["XS","S","M","L","XL","XXL"],
-    color:["B9C1E8","FFFFFF","A6D6CA","1E1E1E","A9A9A9","D9D9D9"],
-    imgList:["eb814a212874325c65dcdf6e1f2b781091e7e27a.avif","f80e19d6e72a4402edde629815740a9943f52434.avif","088f63ed6036df677712a06914d4590d2ebeca89.avif","73bfe4d986eb3c519c1369f987b2dbae44152fe7.avif"]
+    productname:"Loose Fit Vintage-Look Printed T-Shirt",
+    productid:"5",
+    productcategory:"men",
+    producttype:'t-shirt',
+    productavaiableornot:true,
+    productimage:"f80e19d6e72a4402edde629815740a9943f52434.avif",
+    productprice:18.00,
+    productsizes:["XS","S","M","L","XL","XXL"],
+    productcolors:[{hex:"B9C1E8",_key:'1'},{hex:"FFFFFF",_key:'2'},{hex:"A6D6CA",_key:'3'},{hex:"1E1E1E",_key:'4'},{hex:"A9A9A9",_key:'5'},{hex:"D9D9D9",_key:'6'}],
+    productimagelist:[{imageid:1,productimage:"eb814a212874325c65dcdf6e1f2b781091e7e27a.avif"},{imageid:2,productimage:"eb814a212874325c65dcdf6e1f2b781091e7e27a.avif"},{imageid:3,productimage:"eb814a212874325c65dcdf6e1f2b781091e7e27a.avif"},{imageid:4,productimage:"eb814a212874325c65dcdf6e1f2b781091e7e27a.avif"},]
 };

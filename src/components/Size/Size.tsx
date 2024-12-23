@@ -1,6 +1,6 @@
 'use client';
 import useClothContext from '@/Hooks/ClothContext/ClothContext';
-import { poppins, sideBarSize } from '@/utils/Helper/helper';
+import { poppins } from '@/utils/Helper/helper';
 import React from 'react'
 
 function Size({sizeFilter}:{sizeFilter:(size:string) => void}) {
