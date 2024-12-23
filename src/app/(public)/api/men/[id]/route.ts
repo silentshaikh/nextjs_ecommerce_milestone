@@ -3,7 +3,7 @@ import {  NextRequest, NextResponse } from "next/server";
 
 export async function GET(req:NextRequest,{params}:{params:{id:string}}){
     try {
-        const fetchProductMen = await fetch(`http://localhost:3000/api/men`);
+        const fetchProductMen = await fetch(`${process.env.NEXT_PUBLIC_CLOTH_API}/api/men`);
     const dataIntoJson:ClothList[] = await fetchProductMen.json();
     const getProductDetail = dataIntoJson.find((e) => {
         return e.productid === params.id;

@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(){
     try {
-        const fetchCloth = await fetch(`http://localhost:3000/api/clothapi`);
+        const fetchCloth = await fetch(`${process.env.NEXT_PUBLIC_CLOTH_API}/api/clothapi`);
         const clthData:ClothList[] = await fetchCloth.json();
         const findWomenProduct = clthData.filter((e) => {
             return e.productcategory === 'women';
