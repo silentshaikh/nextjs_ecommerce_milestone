@@ -386,7 +386,7 @@ function Context({ children }: ContextChild) {
   useEffect(() => {
     const callFetchCloth = async () => {
       const clothListForProductDetail: ClothList[] = await fetchProduct(
-        "http://localhost:3000/api/clothapi"
+        `${process.env.NEXT_PUBLIC_CLOTH_API}/api/clothapi`
       );
       setProductList(clothListForProductDetail);
       const menList: ClothList[] = clothListForProductDetail.filter(

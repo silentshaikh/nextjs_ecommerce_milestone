@@ -765,55 +765,55 @@ export const webInfo:string[] = ["pricing","about","contact"];
 //Product Btn List
 export const productBtn:string[] = ["new","shirt","jacket","t-shirt","jeans","coat"];
 
-let clothList:ClothList[] = [];
-const fetchCloth = async () => {
-    try {
-        const fetchProduct = await fetch('http://localhost:3000/api/clothapi');
-        const productData:ClothList[] = await fetchProduct.json();
-        clothList = productData;
-    } catch (error) {
-        throw new Error(`${error}: 'Api not Found'`);
-    }
-};
-// const clothList =  await fetchCloth();
-(() => {
-    fetchCloth();
-})();
+// let clothList:ClothList[] = [];
+// const fetchCloth = async () => {
+//     try {
+//         const fetchProduct = await fetch('http://localhost:3000/api/clothapi');
+//         const productData:ClothList[] = await fetchProduct.json();
+//         clothList = productData;
+//     } catch (error) {
+//         throw new Error(`${error}: 'Api not Found'`);
+//     }
+// };
+// // const clothList =  await fetchCloth();
+// (() => {
+//     fetchCloth();
+// })();
 
 //Filter the Men Product
-export  const menProduct = clothList.filter((e) => {
-    return e.productcategory === "men";
-});
+// export  const menProduct = clothList.filter((e) => {
+//     return e.productcategory === "men";
+// });
 
-//Map Type in Men Product
-const menProductType = menProduct.map((e) => {
-    return e.producttype
-});
-//Remove Duplicate 
-export const removDuplicateType:string[] = [... new Set(menProductType)];
+// //Map Type in Men Product
+// const menProductType = menProduct.map((e) => {
+//     return e.producttype
+// });
+// //Remove Duplicate 
+// export const removDuplicateType:string[] = [... new Set(menProductType)];
 
-//Filter the Women Product
-export  const womenProduct = clothList.filter((e) => {
-    return e.productcategory === "women";
-});
-//Map Type in Women Product
-const womenProductType = womenProduct.map((e) => {
-    return e.producttype;
-});
-//Remove Duplicate 
-export const removDuplicateTypeWomen:string[] = [... new Set(womenProductType)];
-// console.log(removDuplicateType) 
+// //Filter the Women Product
+// export  const womenProduct = clothList.filter((e) => {
+//     return e.productcategory === "women";
+// });
+// //Map Type in Women Product
+// const womenProductType = womenProduct.map((e) => {
+//     return e.producttype;
+// });
+// //Remove Duplicate 
+// export const removDuplicateTypeWomen:string[] = [... new Set(womenProductType)];
+// // console.log(removDuplicateType) 
 
-//Filter the Kids Product
-export  const kidProduct = clothList.filter((e) => {
-    return e.productcategory === "kid";
-});
-//Map Type in Women Product
-const kidProductType = kidProduct.map((e) => {
-    return e.producttype;
-});
-//Remove Duplicate 
-export const removDuplicateTypeKid:string[] = [... new Set(kidProductType)];
+// //Filter the Kids Product
+// export  const kidProduct = clothList.filter((e) => {
+//     return e.productcategory === "kid";
+// });
+// //Map Type in Women Product
+// const kidProductType = kidProduct.map((e) => {
+//     return e.producttype;
+// });
+// //Remove Duplicate 
+// export const removDuplicateTypeKid:string[] = [... new Set(kidProductType)];
 // console.log(removDuplicateType) 
 
 //Size For Sidebar
