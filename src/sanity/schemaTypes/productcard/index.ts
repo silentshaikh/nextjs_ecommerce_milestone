@@ -26,6 +26,11 @@ export const productCardContent = {
             type:'number'
         },
         {
+            name:'productquantity',
+            title:'Product Quantity',
+            type:'number'
+        },
+        {
             name:'productimage',
             title:'product Image',
             type:'image',

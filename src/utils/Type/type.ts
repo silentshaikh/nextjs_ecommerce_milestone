@@ -168,6 +168,7 @@ export interface ClothList {
   productcategory: string; // Category of the product (e.g., "men")
   productimage: string; // Main product image URL
   productimagelist: ProductImage[]; // Array of additional product images
+  productquantity:number;
 }
 
 
@@ -218,6 +219,7 @@ export interface ProductContentType {
     _key:string;
     hex:string
   }[];
+  quan:number
 }
 
 //Product Search Type

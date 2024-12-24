@@ -28,13 +28,15 @@ import { NextResponse } from "next/server";
 export async function GET(){
    try {
     // const clothList:ClothList[] = await readClothFile();
-    const clothList:ClothList[]  = await client.fetch(`*[_type == "productcardcontent"]{
+    const clothList:ClothList[]  = await client.fetch(`
+      *[_type == "productcardcontent"]{
   productprice,
     productname,
     "productid":productid.current,
     productsizes,
     producttype,
     productcategory,
+    productquantity,
     "productimage":productimage.asset->url,
       productimagelist[]{
         imageid,
@@ -47,9 +49,14 @@ export async function GET(){
     }
     
 }
+
 `)
     return NextResponse.json(clothList,{status:200});
    } catch (error) {
     return NextResponse.json(`${error}: failed to fetch men product detail`,{status:500});
    }
 };
+
+
+
+

@@ -389,6 +389,7 @@ function Context({ children }: ContextChild) {
       const clothListForProductDetail: ClothList[] = await fetchProduct(
         `${process.env.NEXT_PUBLIC_CLOTH_API}/api/clothapi`
       );
+      console.log(clothListForProductDetail)
       setProductList(clothListForProductDetail);
       const menList: ClothList[] = clothListForProductDetail.filter(
         (e) => e.productcategory === "men"
