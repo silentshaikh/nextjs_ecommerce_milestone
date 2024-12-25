@@ -375,7 +375,7 @@ function Context({ children }: ContextChild) {
   // fetch all product
   const fetchProduct = async (productDetail: string) => {
     try {
-      const fetchDetail = await fetch(productDetail, { cache: "force-cache" });
+      const fetchDetail = await fetch(productDetail,{cache:"no-store"});
       const detailIntoJson: ClothList[] = await fetchDetail.json();
       return detailIntoJson;
     } catch (error) {

@@ -3,7 +3,7 @@ import { client } from "@/sanity/lib/client";
 import { ClothList } from "@/utils/Type/type";
 import { NextResponse } from "next/server";
 
-export async function GET(){
+export async function GET(res:NextResponse){
    try {
     const clothList:ClothList[]  = await client.fetch(`
       *[_type == "productcardcontent"]{
@@ -26,7 +26,11 @@ export async function GET(){
     }
     
 }`)
-    return NextResponse.json(clothList,{status:200});
+    return NextResponse.json(clothList,{status:200,
+      headers: {
+        "Cache-Control": "no-store", // Ensures no caching
+      },
+    });
    } catch (error) {
     return NextResponse.json(`${error}: failed to fetch men product detail`,{status:500});
    }
