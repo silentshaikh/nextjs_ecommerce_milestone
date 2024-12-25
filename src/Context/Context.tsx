@@ -31,6 +31,7 @@ import {
 } from "@/utils/Type/type";
 // import { menProduct } from "@/utils/Helper/helper";
 import { client } from "@/sanity/lib/client";
+// import { SanityClient } from "sanity";
 
 export const ClothAppContext = createContext<ContextType | null>(null);
 // reducer Action
@@ -404,6 +405,12 @@ function Context({ children }: ContextChild) {
       dispatchs({ type: ACTIONFILTER.LOADKIDPROD, payload: kidList });
     };
     callFetchCloth();
+
+    const subscrip = client.listen(`*[_type == "productcardcontent"]`,{},{includeResult:true}).subscribe((update) => {
+      console.log(`Real Time Update : ${update}`);
+      callFetchCloth();
+    });
+    return () => subscrip.unsubscribe();
   },[]);
   
   

@@ -25,9 +25,7 @@ export async function GET(){
       _key
     }
     
-}
-
-`)
+}`)
     return NextResponse.json(clothList,{status:200});
    } catch (error) {
     return NextResponse.json(`${error}: failed to fetch men product detail`,{status:500});
