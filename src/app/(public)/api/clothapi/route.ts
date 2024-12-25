@@ -1,9 +1,9 @@
 
 import { client } from "@/sanity/lib/client";
 import { ClothList } from "@/utils/Type/type";
-import { NextResponse } from "next/server";
+import {NextResponse } from "next/server";
 
-export async function GET(res:NextResponse){
+export async function GET(){
    try {
     const clothList:ClothList[]  = await client.fetch(`
       *[_type == "productcardcontent"]{
