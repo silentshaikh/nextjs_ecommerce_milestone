@@ -397,3 +397,10 @@ export interface ProdAction{
   type:string;
   payload:string|null|boolean|ClothList[];
 };
+
+export  interface Events<T>{
+  documentId: string; // ID of the document affected
+  transition: "appear" | "update" | "disappear"; // Type of event
+  result?: T; // Updated or newly created document (available for 'appear' and 'update')
+  previous?: T; // The state of the document before an update
+}
