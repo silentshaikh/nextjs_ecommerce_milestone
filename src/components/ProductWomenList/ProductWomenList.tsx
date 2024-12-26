@@ -18,7 +18,7 @@ function ProductWomenList({}:{womenProduct:ClothList[] | undefined}) {
         (womenProduct.map((e) => {
           return(
             <Card  key={e.productid} productcolors={e.productcolors} productname={e.productname} productimage={e.productimage} productid={e.productid} productcategory={e.productcategory} productimagelist={e.productimagelist}
-            productsizes={e.productsizes} productprice={e.productprice}  producttype={e.producttype} productavaiableornot={e.productavaiableornot} productquantity={e.productquantity}/>   
+            productsizes={e.productsizes} productprice={e.productprice}  producttype={e.producttype} productavaiableornot={e.productavaiableornot}/>   
           )
         }))
       : (<div className={` ${rubikBuble.className} h-screen flex items-center`}> 

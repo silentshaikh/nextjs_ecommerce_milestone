@@ -4,7 +4,7 @@ import useClothContext from '@/Hooks/ClothContext/ClothContext';
 import { useRouter } from 'next/navigation';
 import ProductCardSize from '../ProductCardSize/ProductCardSize';
 import ProductImgQuantity from '../ProductImgQuantity/ProductImgQuantity';
-function ProductImgContent({color,name,size,price,quan}:ProductContentType) {
+function ProductImgContent({color,name,size,price}:ProductContentType) {
   const navigToCart = useRouter();
   const {colr,selectColr} = useClothContext()
   return (
@@ -15,7 +15,7 @@ function ProductImgContent({color,name,size,price,quan}:ProductContentType) {
       <p className='w-80 font-bold text-sm pb-2 max-[950px]:pb-8 max-[950px]:w-64 max-[720px]:pb-4 max-[700px]:w-80 max-[700px]:pb-12 max-[380px]:pb-6 max-[380px]:w-64 max-[320px]:w-60 max-[300px]:w-52'>Relaxed-fit shirt. Camp collar and
 short sleeves. Button-up front.
 </p>
-    <ProductImgQuantity quan={quan}/>
+    <ProductImgQuantity />
     <h4 className='font-bold'>Color:</h4>
         <div className='flex gap-1 pb-3'>
         {color.map((e) => {

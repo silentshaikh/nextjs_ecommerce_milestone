@@ -16,7 +16,7 @@ import useClothContext from '@/Hooks/ClothContext/ClothContext';
   return (
     <section className={`${workSans.className} flex justify-evenly items-center pt-32 pb-10 max-[700px]:flex-col max-[700px]:gap-10`}>
       <ProductImg img={findProductMen.productimage} name={findProductMen.productname} imgList={findProductMen.productimagelist} />
-    <ProductImgContent name={findProductMen.productname} quan={findProductMen.productquantity} color={findProductMen.productcolors} size={findProductMen.productsizes} price={findProductMen.productprice}/>
+    <ProductImgContent name={findProductMen.productname}  color={findProductMen.productcolors} size={findProductMen.productsizes} price={findProductMen.productprice}/>
     </section>
   )
 };
