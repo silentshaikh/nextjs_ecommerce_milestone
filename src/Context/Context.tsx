@@ -386,7 +386,7 @@ function Context({ children }: ContextChild) {
  
   useEffect(() => {
     const callFetchCloth = async () => {
-      const clothListForProductDetail: ClothList[] = await fetchProduct(`${process.env.NEXT_PUBLIC_HOSTED_API}`);
+      const clothListForProductDetail: ClothList[] = await fetchProduct(`https://clothcraft.vercel.app/api/clothapi`);
       console.log(process.env.NEXT_PUBLIC_HOSTED_API)
       setProductList(clothListForProductDetail);
       const menList: ClothList[] = clothListForProductDetail.filter(

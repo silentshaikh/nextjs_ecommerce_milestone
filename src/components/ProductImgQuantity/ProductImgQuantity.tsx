@@ -8,7 +8,7 @@ function ProductImgQuantity() {
     <div className='flex gap-4 items-center  py-3  '>
       <button className='bg-[#F3F3F3] p-2'><FiMinus />
       </button>
-      <h5>0</h5>
+      <h5>1</h5>
       <button className='bg-[#F3F3F3] p-2'><GoPlus />
       </button>
     </div>
