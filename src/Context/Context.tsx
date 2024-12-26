@@ -375,7 +375,7 @@ function Context({ children }: ContextChild) {
   // fetch all product
   const fetchProduct = async (productDetail: string) => {
     try {
-      const fetchDetail = await fetch(productDetail,{cache:"no-store"});
+      const fetchDetail = await fetch(productDetail);
       const detailIntoJson: ClothList[] = await fetchDetail.json();
       return detailIntoJson;
     } catch (error) {
@@ -387,9 +387,9 @@ function Context({ children }: ContextChild) {
   useEffect(() => {
     const callFetchCloth = async () => {
       const clothListForProductDetail: ClothList[] = await fetchProduct(
-        `${process.env.NEXT_PUBLIC_CLOTH_API}/api/clothapi`
+        `${process.env.NEXT_PUBLIC_LOCAL_API || process.env.NEXT_PUBLIC_HOSTED_API}`
       );
-      console.log(clothListForProductDetail)
+      console.log(process.env.NEXT_PUBLIC_LOCAL_API || process.env.NEXT_PUBLIC_HOSTED_API)
       setProductList(clothListForProductDetail);
       const menList: ClothList[] = clothListForProductDetail.filter(
         (e) => e.productcategory === "men"
@@ -412,7 +412,6 @@ function Context({ children }: ContextChild) {
     });
     return () => subscrip.unsubscribe();
   },[]);
-  
   
   const prod = productList.map((e) => {
     return e.productprice;

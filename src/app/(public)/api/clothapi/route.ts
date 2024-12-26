@@ -27,9 +27,7 @@ export async function GET(){
     
 }`)
     return NextResponse.json(clothList,{status:200,
-      headers: {
-        "Cache-Control": "no-store", // Ensures no caching
-      },
+      // headers: { "Cache-Control": "no-store" },
     });
    } catch (error) {
     return NextResponse.json(`${error}: failed to fetch men product detail`,{status:500});
