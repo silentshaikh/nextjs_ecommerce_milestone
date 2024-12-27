@@ -520,9 +520,9 @@ function Context({ children }: ContextChild) {
 
   const [cartData, cartDispatch] = useReducer(handleAddToCart, initalCartData);
 
-  const prod = productList.map((e) => {
+  // const prod = productList.map((e) => {
     return e.productprice;
-  });
+  // });
   // const maxPrice = Math.max(...new Set(prod));
   //Filter Product Reducer
   const initialFiltProd: ProductReducer = {
