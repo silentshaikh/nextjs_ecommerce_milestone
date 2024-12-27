@@ -168,7 +168,7 @@ export interface ClothList {
   productcategory: string; // Category of the product (e.g., "men")
   productimage: string; // Main product image URL
   productimagelist: ProductImage[]; // Array of additional product images
-  // productquantity:number;
+  productquantity:number;
 }
 
 
@@ -209,6 +209,9 @@ export interface ProductImages {
 //Product Card Size Type
 export interface ProductCardSizeType {
   productSize: string[];
+  selectSize:(id:string,size:string) => void;
+  prodId:string;
+  prodCartSize:string;
 }
 //Product Page Context
 export interface ProductContentType {
@@ -219,7 +222,8 @@ export interface ProductContentType {
     _key:string;
     hex:string
   }[];
-  // quan:number
+  prodId:string;
+  quan:number
 }
 
 //Product Search Type
@@ -367,6 +371,13 @@ export interface ContextType {
   onOutOfStock:() => void;
   onOutOfStockWomen:() => void;
   onOutOfStockKid:() => void;
+  incQuantity:(id:string) => void,
+    decQuantity:(id:string) => void,
+    onSetProdColor:(id:string,color:string) => void;
+    onSetProdSize:(id:string,size:string) => void;
+    onAddToCart: (product:ClothList,quantity:number) => void,
+    prodQuan:number,
+    cartData:CartType;
   // fetchProductDetail:(e:string) => Promise<ClothList|undefined>
 }
 
@@ -403,4 +414,36 @@ export  interface Events<T>{
   transition: "appear" | "update" | "disappear"; // Type of event
   result?: T; // Updated or newly created document (available for 'appear' and 'update')
   previous?: T; // The state of the document before an update
+};
+
+//Cart Data type
+export interface CartListType{
+  productname: string; 
+  productid: string; 
+  productsize: string; 
+  // producttype: string; 
+  // productavaiableornot: boolean | null; 
+  productcolor:string; 
+  productprice: number; 
+  productcategory: string; 
+  productimage: string;
+  productquantity:number;
+  // productimagelist: ProductImage[]; 
+};
+
+export interface CartType{
+  cartList:ClothList[];
+  productQuantity:number;
+  prodColor:string;
+  prodSize:string;
+  totalQuantity:number;
+  totalPrice:number;
+  AddProduct:CartListType[];
+};
+
+export interface CartAction{
+  type:string;
+  payload:any;
+
 }
+

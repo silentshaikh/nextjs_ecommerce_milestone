@@ -846,5 +846,5 @@ export const cart:ClothList = {
     productsizes:["XS","S","M","L","XL","XXL"],
     productcolors:[{hex:"B9C1E8",_key:'1'},{hex:"FFFFFF",_key:'2'},{hex:"A6D6CA",_key:'3'},{hex:"1E1E1E",_key:'4'},{hex:"A9A9A9",_key:'5'},{hex:"D9D9D9",_key:'6'}],
     productimagelist:[{imageid:1,productimage:"eb814a212874325c65dcdf6e1f2b781091e7e27a.avif"},{imageid:2,productimage:"eb814a212874325c65dcdf6e1f2b781091e7e27a.avif"},{imageid:3,productimage:"eb814a212874325c65dcdf6e1f2b781091e7e27a.avif"},{imageid:4,productimage:"eb814a212874325c65dcdf6e1f2b781091e7e27a.avif"},],
-    // productquantity:0,
+    productquantity:0,
 };

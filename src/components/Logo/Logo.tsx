@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 function Logo() {
   const {headerContent} = useClothContext();
-  console.log(headerContent)
+  // console.log(headerContent)
   return (
     <Link href={`/`}>
     <div className="cursor-pointer max-[780px]:relative max-[780px]:right-16 max-[334px]:right-20">

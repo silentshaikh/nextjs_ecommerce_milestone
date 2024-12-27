@@ -12,7 +12,7 @@ function ProductMenList({}:{productMen:ClothList[]| undefined}) {
   // const searchProd = productMen?.filter((e) => {
   //   return e.name.toLowerCase().split(/\s+/).join("").includes(meninput.toLowerCase().split(/\s+/).join(""));
   // });
-  console.log(product);
+  // console.log(product);
   if(product){
     return (
       <section className={`${poppins.className} flex justify-evenly items-center flex-wrap`}>
@@ -21,7 +21,7 @@ function ProductMenList({}:{productMen:ClothList[]| undefined}) {
         (product.map((e) => {
           return(
               <Card  key={e.productid} productcolors={e.productcolors} productname={e.productname} productimage={e.productimage} productid={e.productid} productcategory={e.productcategory} productimagelist={e.productimagelist}
-              productsizes={e.productsizes} productprice={e.productprice}  producttype={e.producttype} productavaiableornot={e.productavaiableornot} />
+              productsizes={e.productsizes} productprice={e.productprice}  producttype={e.producttype} productavaiableornot={e.productavaiableornot}  productquantity={e.productquantity}/>
           );
         }))
         : (<div className={` ${rubikBuble.className} h-screen flex items-center`}> 

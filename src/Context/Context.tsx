@@ -10,7 +10,10 @@ import {
 } from "react";
 import {
   Action,
+  CartAction,
+  CartListType,
   CartSanity,
+  CartType,
   CheckoutSanity,
   ClothList,
   CollectionSanity,
@@ -169,27 +172,52 @@ export const initialWebCont: WebContentReducer = {
   },
 };
 
+//initial data for Add to Cart
+
+const ADDTOCARTACTION = {
+  PRODQUANTITYINC: "PRODQUANTITYINC",
+  PRODQUANTITYDEC: "PRODQUANTITYDEC",
+  ADDCOLOR: "ADDCOLOR",
+  ADDSIZE: "ADDSIZE",
+  ADDTOCART: "ADDTOCART",
+};
+
 function headerContReducer(
   state: WebContentReducer,
   action: WebContentAction
 ): WebContentReducer {
   switch (action.type) {
     case ACTIONCONTENT.HEADERCONTENT:
-      return (state = { ...state, headerContent: action.payload as HeaderSanity });
+      return (state = {
+        ...state,
+        headerContent: action.payload as HeaderSanity,
+      });
     case ACTIONCONTENT.HEROCONTENT:
       return (state = { ...state, heroContent: action.payload as HeroSanity });
     case ACTIONCONTENT.NEWWEEKCONTENT:
-      return (state = { ...state, weekContent: action.payload as WeekSanity});
+      return (state = { ...state, weekContent: action.payload as WeekSanity });
     case ACTIONCONTENT.COLLECTIONCONTENT:
-      return (state = { ...state, collectionContent: action.payload as CollectionSanity });
+      return (state = {
+        ...state,
+        collectionContent: action.payload as CollectionSanity,
+      });
     case ACTIONCONTENT.FASHIONCONTENT:
-      return (state = { ...state, fashionContent: action.payload as FashionContentSanity });
+      return (state = {
+        ...state,
+        fashionContent: action.payload as FashionContentSanity,
+      });
     case ACTIONCONTENT.FOTTERCONTENT:
-      return (state = { ...state, footerContent: action.payload as FooterSanity });
+      return (state = {
+        ...state,
+        footerContent: action.payload as FooterSanity,
+      });
     case ACTIONCONTENT.CARTCONTENT:
       return (state = { ...state, cartContent: action.payload as CartSanity });
     case ACTIONCONTENT.CHECKOUTCONTENT:
-      return (state = { ...state, checkoutContent: action.payload  as CheckoutSanity });
+      return (state = {
+        ...state,
+        checkoutContent: action.payload as CheckoutSanity,
+      });
     default:
       return state;
   }
@@ -218,11 +246,9 @@ function Context({ children }: ContextChild) {
   const [heroSlide, setHeroSlide] = useState(false);
   // product api state
   const [productList, setProductList] = useState<ClothList[]>([]);
-  //filter type state
-  // const [isType,setType] = useState(false);
+  //set quantity for product
+  const [prodQuan, setProdQuan] = useState(0);
   //price filter input
-  // const [price,setPrice] = useState('80');
-  // const [womenPrice,setWomenPrice]= useState('80');
   const [priceInp, setPriceInp] = useState({
     price: "80",
     priceWomen: "80",
@@ -335,36 +361,36 @@ function Context({ children }: ContextChild) {
     cartheading
 }`),
       });
-      
-//       dispatchWeb({
-//         type: ACTIONCONTENT.CHECKOUTCONTENT,
-//         payload: await fetchHeaderContent(`
-//   *[_type == "checkoutcontent"][0]{
-//   citylabel,
-//     shippingaddress,
-//     checkoutheading,
-//     checkoutheading,
-//     addresslabel,
-//     emaillabel,
-//     postalcodelabel,
-//     contactinfo,
-//     lastnamelabel,
-//     numberlabel,
-//     firstnamelabel,
-//     shippingbutton,
-//     statelabel,
-//     checkoutlist[]{
-//       itemid,
-//       listitem
-//     }
-// }
-  
-//   `),
-//       });
+
+      //       dispatchWeb({
+      //         type: ACTIONCONTENT.CHECKOUTCONTENT,
+      //         payload: await fetchHeaderContent(`
+      //   *[_type == "checkoutcontent"][0]{
+      //   citylabel,
+      //     shippingaddress,
+      //     checkoutheading,
+      //     checkoutheading,
+      //     addresslabel,
+      //     emaillabel,
+      //     postalcodelabel,
+      //     contactinfo,
+      //     lastnamelabel,
+      //     numberlabel,
+      //     firstnamelabel,
+      //     shippingbutton,
+      //     statelabel,
+      //     checkoutlist[]{
+      //       itemid,
+      //       listitem
+      //     }
+      // }
+
+      //   `),
+      //       });
     };
     sanityContent();
     // console.log(webContent);
-  },[]);
+  }, []);
 
   async function fetchHeaderContent(query: string) {
     const contentHeader = await client.fetch(query);
@@ -375,19 +401,20 @@ function Context({ children }: ContextChild) {
   // fetch all product
   const fetchProduct = async (productDetail: string) => {
     try {
-      const fetchDetail = await fetch(productDetail,{cache:'force-cache'});
+      const fetchDetail = await fetch(productDetail, { cache: "force-cache" });
       const detailIntoJson: ClothList[] = await fetchDetail.json();
       return detailIntoJson;
     } catch (error) {
       throw new Error(`${error}: API Not Found`);
     }
   };
-  
- 
+
   useEffect(() => {
     const callFetchCloth = async () => {
-      const clothListForProductDetail: ClothList[] = await fetchProduct(`https://clothcraft.vercel.app/api/clothapi`);
-      console.log(process.env.NEXT_PUBLIC_HOSTED_API)
+      const clothListForProductDetail: ClothList[] = (
+        await fetchProduct(`https://clothcraft.vercel.app/api/clothapi`)
+      ).map((e) => ({ ...e, productquantity: 0 }));
+      // console.log(process.env.NEXT_PUBLIC_HOSTED_API)
       setProductList(clothListForProductDetail);
       const menList: ClothList[] = clothListForProductDetail.filter(
         (e) => e.productcategory === "men"
@@ -404,18 +431,99 @@ function Context({ children }: ContextChild) {
     };
     callFetchCloth();
 
-    const subscrip = client.listen(`*[_type == "productcardcontent"]`,{},{includeResult:true}).subscribe((update) => {
-      console.log(`Real Time Update : ${update}`);
-      callFetchCloth();
-    });
+    const subscrip = client
+      .listen(`*[_type == "productcardcontent"]`, {}, { includeResult: true })
+      .subscribe((update) => {
+        console.log(`Real Time Update : ${update}`);
+        callFetchCloth();
+      });
     return () => subscrip.unsubscribe();
-  },[]);
+  }, []);
+
+  const initalCartData: CartType = {
+    cartList: [],
+    productQuantity: 0,
+    prodColor:'',
+    prodSize:'',
+    totalPrice:0,
+    totalQuantity:0,
+    AddProduct:[],
+  };
+  //applying Add to Cart Functionality
+  const { PRODQUANTITYDEC, PRODQUANTITYINC,ADDCOLOR,ADDSIZE,ADDTOCART } = ADDTOCARTACTION;
+  const incQuantity = (id: string) => {
+    cartDispatch({ type: PRODQUANTITYINC, payload: id });
+  };
+  const decQuantity = (id: string) => {
+    cartDispatch({ type: PRODQUANTITYDEC, payload: id });
+  };
+  const onSetProdColor = (id:string,color:string) => {
+    cartDispatch({type:ADDCOLOR,payload:{prodId:id,prodColor:color}});
+  };
+  const onSetProdSize = (id:string,size:string) => {
+    cartDispatch({type:ADDSIZE,payload:{prodId:id,prodSize:size}});
+  };
+  const onAddToCart = (product:ClothList,quantity:number) => {
+    cartDispatch({type:ADDTOCART,payload:{product,quantity}})
+  };
   
+  const handleAddToCart = (state: CartType, action: CartAction): CartType => {
+    switch (action.type) {
+      case PRODQUANTITYINC:
+        const updatedCartInc = productList.map((e) =>
+          e.productid === action.payload
+            ? { ...e, productquantity:++e.productquantity}
+            : e
+        );
+        return { ...state, cartList: updatedCartInc };
+
+      case PRODQUANTITYDEC:
+        const updatedCartDec = productList.map((e) =>
+          e.productid === action.payload
+            ? { ...e, productquantity: Math.max(0, --e.productquantity) }
+            : e
+        );
+        return { ...state, cartList: updatedCartDec };
+      
+      case ADDCOLOR:
+        const prodIdForColor = productList.find((e) => e.productid === action.payload.prodId);
+      if(prodIdForColor){
+        return {...state,prodColor:action.payload.prodColor};           
+      }else{
+        return state;
+      }
+       case ADDSIZE:
+        const prodIdForSize = productList.find((e) => e.productid === action.payload.prodId);
+      if(prodIdForSize){
+        return {...state,prodSize:action.payload.prodSize};           
+      }else{
+        return state;
+      }
+      case ADDTOCART:
+        const prodIdForFind = productList.find((e) => e.productid === action.payload.product.productid);
+      if(prodIdForFind){
+        if(state.prodColor === '' && state.prodSize === '' && prodIdForFind.productquantity<0){
+          alert('Plz selct the color , size and qunqtity of product');
+        }else{
+          const setTotalQuantity = state.cartList.map((e) => e.productquantity).reduce((prev,curr) => {
+            return prev+curr;
+          },0);
+        }
+      }else{
+        alert('Product is not Available')
+      }
+
+      default:
+        return state;
+    }
+  };
+
+  const [cartData, cartDispatch] = useReducer(handleAddToCart, initalCartData);
+
   const prod = productList.map((e) => {
     return e.productprice;
   });
   const maxPrice = Math.max(...new Set(prod));
-  console.log(maxPrice);
   //Filter Product Reducer
   const initialFiltProd: ProductReducer = {
     product: [],
@@ -434,7 +542,10 @@ function Context({ children }: ContextChild) {
       ? backup
       : backup.filter((item) => item.productavaiableornot === isAvailable);
   };
-  const filterByOutStock = (backup: ClothList[], outOfStock: boolean|null) => {
+  const filterByOutStock = (
+    backup: ClothList[],
+    outOfStock: boolean | null
+  ) => {
     return outOfStock === null
       ? backup
       : backup.filter((item) => item.productavaiableornot === outOfStock);
@@ -455,13 +566,13 @@ function Context({ children }: ContextChild) {
   };
   function filtProductReducer(
     state: ProductReducer,
-    action: ProdAction,
+    action: ProdAction
   ): ProductReducer {
     switch (action.type) {
       case ACTIONFILTER.INPUTFILTER:
         const { payload } = action;
         // If the input value is empty or null, return the full list of products
-        if (!(payload as string).trim() ) {
+        if (!(payload as string).trim()) {
           return { ...state, product: state.backupProduct }; // Use a backup of the full product list
         }
         const filtMenInput = state.backupProduct.filter((e) => {
@@ -490,7 +601,9 @@ function Context({ children }: ContextChild) {
             .toLowerCase()
             .split(/\s+/)
             .join("")
-            .includes((action.payload as string).toLowerCase().split(/\s+/).join(""));
+            .includes(
+              (action.payload as string).toLowerCase().split(/\s+/).join("")
+            );
         });
         return { ...state, womenProduct: filtWomenInput };
 
@@ -511,7 +624,9 @@ function Context({ children }: ContextChild) {
             .toLowerCase()
             .split(/\s+/)
             .join("")
-            .includes((action.payload as string).toLowerCase().split(/\s+/).join(""));
+            .includes(
+              (action.payload as string).toLowerCase().split(/\s+/).join("")
+            );
         });
         return { ...state, kidProduct: filtKidInput };
 
@@ -528,7 +643,9 @@ function Context({ children }: ContextChild) {
             .toLowerCase()
             .split(/\s+/)
             .join("")
-            .includes((action.payload as string).toLowerCase().split(/\s+/).join(""));
+            .includes(
+              (action.payload as string).toLowerCase().split(/\s+/).join("")
+            );
         });
         return { ...state, product: filtMenBtn };
 
@@ -538,7 +655,9 @@ function Context({ children }: ContextChild) {
             .toLowerCase()
             .split(/\s+/)
             .join("")
-            .includes((action.payload as string).toLowerCase().split(/\s+/).join(""));
+            .includes(
+              (action.payload as string).toLowerCase().split(/\s+/).join("")
+            );
         });
         return { ...state, womenProduct: filtWomenBtn };
 
@@ -548,25 +667,27 @@ function Context({ children }: ContextChild) {
             .toLowerCase()
             .split(/\s+/)
             .join("")
-            .includes((action.payload as string).toLowerCase().split(/\s+/).join(""));
+            .includes(
+              (action.payload as string).toLowerCase().split(/\s+/).join("")
+            );
         });
         return { ...state, kidProduct: filtKidBtn };
 
       case ACTIONFILTER.SIZEMENFILTER:
         const filtSizeMen = state.backupProduct.filter((e) => {
-          return e.productsizes.includes((action.payload as string));
+          return e.productsizes.includes(action.payload as string);
         });
         return { ...state, product: filtSizeMen };
 
       case ACTIONFILTER.SIZEWOMENFILTER:
         const filtSizeWomen = state.womenBackupProduct.filter((e) => {
-          return e.productsizes.includes((action.payload as string));
+          return e.productsizes.includes(action.payload as string);
         });
         return { ...state, womenProduct: filtSizeWomen };
 
       case ACTIONFILTER.SIZEKIDFILTER:
         const filtSizeKid = state.kidBackupProduct.filter((e) => {
-          return e.productsizes.includes((action.payload as string));
+          return e.productsizes.includes(action.payload as string);
         });
         return { ...state, kidProduct: filtSizeKid };
 
@@ -582,26 +703,35 @@ function Context({ children }: ContextChild) {
         // });
         return {
           ...state,
-          product: filterByColor(state.backupProduct, (action.payload as string)),
+          product: filterByColor(state.backupProduct, action.payload as string),
         };
 
       case ACTIONFILTER.COLORWOMENFILTER:
         return {
           ...state,
-          womenProduct: filterByColor(state.womenBackupProduct, (action.payload as string)),
+          womenProduct: filterByColor(
+            state.womenBackupProduct,
+            action.payload as string
+          ),
         };
 
       case ACTIONFILTER.COLORKIDFILTER:
         return {
           ...state,
-          kidProduct: filterByColor(state.kidBackupProduct, (action.payload as string)),
+          kidProduct: filterByColor(
+            state.kidBackupProduct,
+            action.payload as string
+          ),
         };
       case ACTIONFILTER.AVAILABLE:
         const newAvailableState =
           state.availableFilter === action.payload ? null : action.payload;
         return {
           ...state,
-          product: filterByAvailability(state.backupProduct, newAvailableState as boolean),
+          product: filterByAvailability(
+            state.backupProduct,
+            newAvailableState as boolean
+          ),
           availableFilter: newAvailableState as boolean,
         };
 
@@ -635,8 +765,11 @@ function Context({ children }: ContextChild) {
           state.availableFilter === action.payload ? null : action.payload;
         return {
           ...state,
-          product: filterByOutStock(state.backupProduct, newOutOfStockState as boolean|null),
-          availableFilter: newOutOfStockState as boolean|null,
+          product: filterByOutStock(
+            state.backupProduct,
+            newOutOfStockState as boolean | null
+          ),
+          availableFilter: newOutOfStockState as boolean | null,
         };
       case ACTIONFILTER.OUTOFSTOCKWOMEN:
         // Toggle between false and null (all products)
@@ -666,17 +799,23 @@ function Context({ children }: ContextChild) {
       case ACTIONFILTER.PRICEFILTER:
         return {
           ...state,
-          product: filterByPrice(state.backupProduct, (action.payload as string)),
+          product: filterByPrice(state.backupProduct, action.payload as string),
         };
       case ACTIONFILTER.PRICEWOMENFILTER:
         return {
           ...state,
-          womenProduct: filterByPrice(state.womenBackupProduct, (action.payload as string)),
+          womenProduct: filterByPrice(
+            state.womenBackupProduct,
+            action.payload as string
+          ),
         };
       case ACTIONFILTER.PRICEKIDFILTER:
         return {
           ...state,
-          kidProduct: filterByPrice(state.kidBackupProduct, (action.payload as string)),
+          kidProduct: filterByPrice(
+            state.kidBackupProduct,
+            action.payload as string
+          ),
         };
 
       default:
@@ -787,11 +926,7 @@ function Context({ children }: ContextChild) {
   const collectKid = productKid.filter((e, i) => {
     return i > 0 && i < 4;
   });
-  // const collectionProd = productList.map((e, i) => {
-  //   return e;
-  // });
-  //  console.log(collectionProd)
-  
+
   useEffect(() => {
     const collectionAll: ClothList[] = [];
     const findCateg = (categ: string) => {
@@ -837,17 +972,17 @@ function Context({ children }: ContextChild) {
   const productColor = [
     ...new Set(
       ...productList.map((e) => {
-        return e.productcolors.map(e => e.hex);
+        return e.productcolors.map((e) => e.hex);
       })
     ),
   ];
-  console.log(productColor)
+  // console.log(productColor)
 
   //filter Product through type
-  const onHandleFilter = (type: string ) => {
+  const onHandleFilter = (type: string) => {
     dispatchs({ type: ACTIONFILTER.BTNFILTER, payload: type });
   };
-  const onHandleWomenFilter = (type: string ) => {
+  const onHandleWomenFilter = (type: string) => {
     dispatchs({ type: ACTIONFILTER.BTNWOMENFILTER, payload: type });
   };
   const onHandleKidFilter = (type: string) => {
@@ -918,7 +1053,16 @@ function Context({ children }: ContextChild) {
     setPriceInp((prev) => ({ ...prev, [name]: value }));
     dispatchs({ type: ACTIONFILTER.PRICEKIDFILTER, payload: value });
   };
-  const {cartContent,checkoutContent,collectionContent,fashionContent,footerContent,headerContent,heroContent,weekContent} = webContent;
+  const {
+    cartContent,
+    checkoutContent,
+    collectionContent,
+    fashionContent,
+    footerContent,
+    headerContent,
+    heroContent,
+    weekContent,
+  } = webContent;
   // Context value
   const clothOperation: ContextType = {
     list,
@@ -950,7 +1094,14 @@ function Context({ children }: ContextChild) {
     womenProduct,
     kidProduct,
     priceInp,
-    cartContent,checkoutContent,collectionContent,fashionContent,footerContent,headerContent,heroContent,weekContent,
+    cartContent,
+    checkoutContent,
+    collectionContent,
+    fashionContent,
+    footerContent,
+    headerContent,
+    heroContent,
+    weekContent,
     onPriceFilter,
     onPriceFilterWomen,
     onPriceFilterKid,
@@ -978,6 +1129,13 @@ function Context({ children }: ContextChild) {
     onOutOfStockWomen,
     onOutOfStockKid,
     //  fetchProductDetail,
+    incQuantity,
+    decQuantity,
+    onSetProdColor,
+    onSetProdSize,
+    onAddToCart,
+    prodQuan,
+    cartData,
   };
 
   return (
