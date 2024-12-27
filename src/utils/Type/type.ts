@@ -443,7 +443,17 @@ export interface CartType{
 
 export interface CartAction{
   type:string;
-  payload:string|{prodId:string,prodColor:string}|{prodId:string,prodSize:string}|{product:ClothList,quantity:number};
-
+  payload: string|CartColor|CartSize|CartAdd;
+};
+export interface  CartColor{
+  prodId:string,
+  prodColor:string,
 }
-
+export interface  CartSize{
+  prodId:string,
+  prodSize:string,
+}
+export interface  CartAdd{
+  product:ClothList,
+  quantity:number
+}

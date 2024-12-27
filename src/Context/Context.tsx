@@ -11,8 +11,11 @@ import {
 import {
   Action,
   CartAction,
+  CartAdd,
+  CartColor,
   // CartListType,
   CartSanity,
+  CartSize,
   CartType,
   CheckoutSanity,
   ClothList,
@@ -471,7 +474,7 @@ function Context({ children }: ContextChild) {
     switch (action.type) {
       case PRODQUANTITYINC:
         const updatedCartInc = productList.map((e) =>
-          e.productid === action.payload
+          e.productid === (action.payload as string)
             ? { ...e, productquantity:++e.productquantity}
             : e
         );
@@ -479,28 +482,28 @@ function Context({ children }: ContextChild) {
 
       case PRODQUANTITYDEC:
         const updatedCartDec = productList.map((e) =>
-          e.productid === action.payload
+          e.productid === (action.payload as string)
             ? { ...e, productquantity: Math.max(0, --e.productquantity) }
             : e
         );
         return { ...state, cartList: updatedCartDec };
       
       case ADDCOLOR:
-        const prodIdForColor = productList.find((e) => e.productid === action.payload.prodId);
+        const prodIdForColor = productList.find((e) => e.productid === (action.payload as CartColor).prodId);
       if(prodIdForColor){
-        return {...state,prodColor:action.payload.prodColor};           
+        return {...state,prodColor:(action.payload as CartColor).prodColor};           
       }else{
         return state;
       }
        case ADDSIZE:
-        const prodIdForSize = productList.find((e) => e.productid === action.payload.prodId);
+        const prodIdForSize = productList.find((e) => e.productid === (action.payload as CartSize).prodId);
       if(prodIdForSize){
-        return {...state,prodSize:action.payload.prodSize};           
+        return {...state,prodSize:(action.payload as CartSize).prodId};           
       }else{
         return state;
       }
       case ADDTOCART:
-        const prodIdForFind = productList.find((e) => e.productid === action.payload.product.productid);
+        const prodIdForFind = productList.find((e) => e.productid === (action.payload as CartAdd).product.productid);
       if(prodIdForFind){
         if(state.prodColor === '' && state.prodSize === '' && prodIdForFind.productquantity<0){
           alert('Plz selct the color , size and qunqtity of product');
@@ -521,7 +524,7 @@ function Context({ children }: ContextChild) {
   const [cartData, cartDispatch] = useReducer(handleAddToCart, initalCartData);
 
   // const prod = productList.map((e) => {
-    return e.productprice;
+    // return e.productprice;
   // });
   // const maxPrice = Math.max(...new Set(prod));
   //Filter Product Reducer
