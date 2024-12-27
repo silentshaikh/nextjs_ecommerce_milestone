@@ -376,7 +376,7 @@ export interface ContextType {
     onSetProdColor:(id:string,color:string) => void;
     onSetProdSize:(id:string,size:string) => void;
     onAddToCart: (product:ClothList,quantity:number) => void,
-    prodQuan:number,
+    // prodQuan:number,
     cartData:CartType;
   // fetchProductDetail:(e:string) => Promise<ClothList|undefined>
 }
@@ -443,7 +443,7 @@ export interface CartType{
 
 export interface CartAction{
   type:string;
-  payload:any;
+  payload:string|{prodId:string,prodColor:string}|{prodId:string,prodSize:string}|{product:ClothList,quantity:number};
 
 }
 

@@ -1,11 +1,11 @@
 'use client';
 import { ProductContentType } from '@/utils/Type/type';
 import useClothContext from '@/Hooks/ClothContext/ClothContext';
-import { useRouter } from 'next/navigation';
+// import { useRouter } from 'next/navigation';
 import ProductCardSize from '../ProductCardSize/ProductCardSize';
 import ProductImgQuantity from '../ProductImgQuantity/ProductImgQuantity';
 function ProductImgContent({color,name,size,price,prodId,quan}:ProductContentType) {
-  const navigToCart = useRouter();
+  // const navigToCart = useRouter();
   const {onSetProdColor,cartData,onSetProdSize,onAddToCart} = useClothContext();
   const prod = cartData.cartList.find((e) => e.productid === prodId);
   console.log(cartData.prodColor);

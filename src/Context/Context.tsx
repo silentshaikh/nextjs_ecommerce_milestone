@@ -11,7 +11,7 @@ import {
 import {
   Action,
   CartAction,
-  CartListType,
+  // CartListType,
   CartSanity,
   CartType,
   CheckoutSanity,
@@ -247,7 +247,7 @@ function Context({ children }: ContextChild) {
   // product api state
   const [productList, setProductList] = useState<ClothList[]>([]);
   //set quantity for product
-  const [prodQuan, setProdQuan] = useState(0);
+  // const [prodQuan, setProdQuan] = useState(0);
   //price filter input
   const [priceInp, setPriceInp] = useState({
     price: "80",
@@ -505,9 +505,9 @@ function Context({ children }: ContextChild) {
         if(state.prodColor === '' && state.prodSize === '' && prodIdForFind.productquantity<0){
           alert('Plz selct the color , size and qunqtity of product');
         }else{
-          const setTotalQuantity = state.cartList.map((e) => e.productquantity).reduce((prev,curr) => {
-            return prev+curr;
-          },0);
+          // const setTotalQuantity = state.cartList.map((e) => e.productquantity).reduce((prev,curr) => {
+          //   return prev+curr;
+          // },0);
         }
       }else{
         alert('Product is not Available')
@@ -523,7 +523,7 @@ function Context({ children }: ContextChild) {
   const prod = productList.map((e) => {
     return e.productprice;
   });
-  const maxPrice = Math.max(...new Set(prod));
+  // const maxPrice = Math.max(...new Set(prod));
   //Filter Product Reducer
   const initialFiltProd: ProductReducer = {
     product: [],
@@ -1033,7 +1033,6 @@ function Context({ children }: ContextChild) {
   const onColrKidFilter = (color: string) => {
     dispatchs({ type: ACTIONFILTER.COLORKIDFILTER, payload: color });
   };
-
   //Price Filter
   const onPriceFilter = (e: ChangeEvent<HTMLInputElement>) => {
     // setPrice(value);
@@ -1134,7 +1133,7 @@ function Context({ children }: ContextChild) {
     onSetProdColor,
     onSetProdSize,
     onAddToCart,
-    prodQuan,
+    // prodQuan,
     cartData,
   };
 
