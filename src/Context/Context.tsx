@@ -475,7 +475,7 @@ function Context({ children }: ContextChild) {
       case PRODQUANTITYINC:
         const updatedCartInc = productList.map((e) =>
           e.productid === (action.payload as string)
-            ? { ...e, productquantity:++e.productquantity}
+            ? { ...e, productquantity:e.productquantity+1}
             : e
         );
         return { ...state, cartList: updatedCartInc };
@@ -498,7 +498,7 @@ function Context({ children }: ContextChild) {
        case ADDSIZE:
         const prodIdForSize = productList.find((e) => e.productid === (action.payload as CartSize).prodId);
       if(prodIdForSize){
-        return {...state,prodSize:(action.payload as CartSize).prodId};           
+        return {...state,prodSize:(action.payload as CartSize).prodSize};           
       }else{
         return state;
       }

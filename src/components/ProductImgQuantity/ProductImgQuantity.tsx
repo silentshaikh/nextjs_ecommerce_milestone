@@ -4,7 +4,7 @@ import { FiMinus } from 'react-icons/fi'
 import { GoPlus } from 'react-icons/go'
 // {quan}:{quan:number}
 function ProductImgQuantity({prodId}:{prodId:string,quan:number}) {
-  const {prodQuan,incQuantity,decQuantity,cartData} = useClothContext(); 
+  const {incQuantity,decQuantity,cartData} = useClothContext(); 
   const quantityProduct = cartData.cartList.find((e) => e.productid === prodId);
   console.log(quantityProduct?.productquantity);
   // if(quantityProduct){
@@ -12,7 +12,7 @@ function ProductImgQuantity({prodId}:{prodId:string,quan:number}) {
       <div className='flex gap-4 items-center  py-3  '>
         <button className='bg-[#F3F3F3] p-2' onClick={() => decQuantity(prodId)}><FiMinus />
         </button>
-        <h5>{quantityProduct ? quantityProduct.productquantity : prodQuan}</h5>
+        <h5>{quantityProduct ? quantityProduct.productquantity : cartData.productQuantity}</h5>gi
         <button className='bg-[#F3F3F3] p-2' onClick={() => incQuantity(prodId)}><GoPlus />
         </button>
       </div>
