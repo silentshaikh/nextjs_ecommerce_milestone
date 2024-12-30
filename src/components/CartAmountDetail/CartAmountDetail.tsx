@@ -2,13 +2,14 @@
 import useClothContext from '@/Hooks/ClothContext/ClothContext';
 import CostProduct from '../CostProduct/CostProduct';
 function CartAmountDetail() {
-  const {cartContent} = useClothContext();
+  const {cartContent,cartData} = useClothContext();
+  const totalPrice = cartData.totalPrice;
   return (
    
       <div className='border-b-2 border-[#D9D9D9] py-2 text-sm'>
-      <CostProduct name={cartContent.subtotal} price='$123'/>
-      <CostProduct name={cartContent.shipping} price='$10'/>
-      <CostProduct name={cartContent.total}  price='$133' />
+      <CostProduct name={cartContent.subtotal} price={totalPrice}/>
+      <CostProduct name={cartContent.shipping} price={cartData.shippingCost}/>
+      <CostProduct name={cartContent.total}  price={totalPrice>0?totalPrice+10:totalPrice} />
       </div>
       
   

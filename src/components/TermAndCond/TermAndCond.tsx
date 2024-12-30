@@ -11,4 +11,4 @@ function TermAndCond() {
   )
 }
 
-export default TermAndCond
+export default TermAndCond;

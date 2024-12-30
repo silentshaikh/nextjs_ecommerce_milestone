@@ -1,9 +1,8 @@
 'use client'
 import useClothContext from '@/Hooks/ClothContext/ClothContext'
 import CartAmountDetail from '../CartAmountDetail/CartAmountDetail'
-import OrderButton from '../OrderButton/OrderButton'
-import TermAndCond from '../TermAndCond/TermAndCond'
 import { workSans } from '@/utils/Helper/helper'
+import ConfirmOrder from '../ConfirmOrder/ConfirmOrder'
 function CartAmount() {
   const {cartContent} = useClothContext();
   return (
@@ -12,8 +11,7 @@ function CartAmount() {
       <div className='border-2  flex flex-col p-5'>
       <h4 className='uppercase font-bold pb-5'>{cartContent.cartheading}</h4>
         <CartAmountDetail/>
-        <TermAndCond/>
-         <OrderButton />
+        <ConfirmOrder/>
       </div>
       </div>
     </>

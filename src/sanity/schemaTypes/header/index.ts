@@ -66,10 +66,6 @@ export const  headerContent =  {
             title:'Cart Image Two',
             type:'image',
         },
-        {
-            name:'cartquantity',
-            title:'Cart Quantity',
-            type:'number'
-        }
+       
     ]
 }

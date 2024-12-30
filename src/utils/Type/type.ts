@@ -22,7 +22,6 @@ export interface HeaderSanity{
   titletoggicon: string; // Title of the toggle icon
   navlist: NavList[]; // Array of navigation items
   cartname: string; // Name of the cart
-  cartquantity: number; // Quantity of items in the cart
   cartimgone: string; // URL of the first cart image
   cartimgtwo: string;
 }
@@ -251,13 +250,14 @@ export interface TypeForCartCard {
 //Cost of Product
 export interface TypeFOrCostProduct {
   name: string;
-  price: string;
+  price: number;
 }
 
 //checkout Input
 export interface CheckOutInp {
   place: string;
   name: string;
+  value:string;
 }
 //checkout Label
 export interface CheckLabel {
@@ -270,6 +270,7 @@ export interface CheckOutCard {
   img: string;
   color: string;
   size: string;
+  quantity:number;
 }
 
 //checkout card detail
@@ -278,6 +279,33 @@ export interface CheckOutCardDetail {
   size: string;
   color: string;
   price: number;
+  quantity:number;
+}
+
+//checkout input type
+export interface CheckOutInpType{
+  email:string;
+  phone:string;
+  firstname:string;
+  lastname:string;
+  country:string;
+  state:string;
+  address:string;
+  city:string;
+  postalcode:string;
+}
+
+//checkout boolean state
+export interface CheckOutInpCheck{
+  emailCheck:RegExpMatchArray|null;
+  phoneCheck:RegExpMatchArray|null;
+  firstnameCheck:boolean;
+  lastnameCheck:boolean;
+  countryCheck:boolean;
+  stateCheck:boolean;
+  addressCheck:boolean;
+  cityCheck:boolean;
+  postalcodeCheck:RegExpMatchArray|null;
 }
 //side Bar Available
 export interface TypeForAvailable {
@@ -375,7 +403,16 @@ export interface ContextType {
     decQuantity:(id:string) => void,
     onSetProdColor:(id:string,color:string) => void;
     onSetProdSize:(id:string,size:string) => void;
+    onProductDetail:(id:string,categ:string) => void,
     onAddToCart: (product:ClothList,quantity:number) => void,
+    addProdInc:(id:string) => void;
+    addProdDec:(id:string,quantity:number) => void;
+    onHandleTerms: (e:FormEvent<HTMLFormElement>) => void;
+    onHandleCheck:(e:ChangeEvent<HTMLInputElement>) => void,
+    onHandleCheckOutInp:(e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => void,
+    onHandleCheckOutForm:(e:FormEvent<HTMLFormElement>) => void;
+    checkOutInp:CheckOutInpType,
+    isChecked:boolean,
     // prodQuan:number,
     cartData:CartType;
   // fetchProductDetail:(e:string) => Promise<ClothList|undefined>
@@ -437,13 +474,15 @@ export interface CartType{
   prodColor:string;
   prodSize:string;
   totalQuantity:number;
+  shippingCost:number;
   totalPrice:number;
   AddProduct:CartListType[];
+  checkOutList:CartListType[]
 };
 
 export interface CartAction{
   type:string;
-  payload: string|CartColor|CartSize|CartAdd;
+  payload: string|CartColor|CartSize|CartAdd|CartDec|ClothList[];
 };
 export interface  CartColor{
   prodId:string,
@@ -456,4 +495,10 @@ export interface  CartSize{
 export interface  CartAdd{
   product:ClothList,
   quantity:number
+}
+
+//Add Product Type
+export interface CartDec{
+  id:string,
+  quantity:number;
 }

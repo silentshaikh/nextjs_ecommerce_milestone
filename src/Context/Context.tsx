@@ -13,10 +13,14 @@ import {
   CartAction,
   CartAdd,
   CartColor,
+  CartDec,
+  CartListType,
   // CartListType,
   CartSanity,
   CartSize,
   CartType,
+  CheckOutInpCheck,
+  CheckOutInpType,
   CheckoutSanity,
   ClothList,
   CollectionSanity,
@@ -37,6 +41,9 @@ import {
 } from "@/utils/Type/type";
 // import { menProduct } from "@/utils/Helper/helper";
 import { client } from "@/sanity/lib/client";
+import { useRouter } from "next/navigation";
+
+// import { Alegreya } from "next/font/google";
 // import { SanityClient } from "sanity";
 
 export const ClothAppContext = createContext<ContextType | null>(null);
@@ -110,7 +117,6 @@ export const initialWebCont: WebContentReducer = {
     cartimgone: "",
     cartimgtwo: "",
     cartname: "",
-    cartquantity: 0,
     logo: "",
     navlist: [],
     navtoggicon: "",
@@ -178,16 +184,22 @@ export const initialWebCont: WebContentReducer = {
 //initial data for Add to Cart
 
 const ADDTOCARTACTION = {
+  CARTLISTSET: "CARTLISTSET",
   PRODQUANTITYINC: "PRODQUANTITYINC",
   PRODQUANTITYDEC: "PRODQUANTITYDEC",
   ADDCOLOR: "ADDCOLOR",
   ADDSIZE: "ADDSIZE",
   ADDTOCART: "ADDTOCART",
+  INC_ON_CART_PRODUCT:'INC_ON_CART_PRODUCT',
+  DEC_ON_CART_PRODUCT:'DEC_ON_CART_PRODUCT',
+  CHECKOUT: "CHECKOUT",
+  CHECKOUT_DONE: "CHECKOUT_DONE",
+  RESET_COLOR_SIZE:'RESET_COLOR_SIZE',
 };
 
 function headerContReducer(
   state: WebContentReducer,
-  action: WebContentAction
+  action: WebContentAction,
 ): WebContentReducer {
   switch (action.type) {
     case ACTIONCONTENT.HEADERCONTENT:
@@ -226,6 +238,12 @@ function headerContReducer(
   }
 }
 function Context({ children }: ContextChild) {
+  //Handle Term and Condition Checkbox
+  const [isChecked,setIsChecked] = useState<boolean>(false);
+  //For Add To Cart Navigation
+  const cartNavig = useRouter();
+  //For Reset Selected Color of Product
+  
   //For Header Content
   const [webContent, dispatchWeb] = useReducer(
     headerContReducer,
@@ -262,6 +280,75 @@ function Context({ children }: ContextChild) {
   const [backUpCollection, setBackUpCollection] = useState<ClothList[]>([]);
   const [collectNav, setCollectNav] = useState(false);
 
+  //function to Handle Terms input
+  const onHandleCheck = (e:ChangeEvent<HTMLInputElement>) => {
+    setIsChecked(e.target.checked);
+  };
+  //Handle Checkout Inputs
+  const [checkOutInp,setCheckOutInp] = useState<CheckOutInpType>({
+    address:'',
+    city:'',
+    country:'',
+    email:'',
+    firstname:'',
+    lastname:'',
+    phone:'',
+    postalcode:'',
+    state:'',
+  });
+  const onHandleCheckOutInp = (e:ChangeEvent<HTMLInputElement|HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setCheckOutInp((prev: CheckOutInpType) => ({ ...prev, [name]: value }));
+    // console.log(name)
+};
+  //Handle Checkout Form
+const onHandleCheckOutForm = (e:FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const {address,city,country,email,firstname,lastname,phone,postalcode,state} = checkOutInp;
+    //Regex For Input Fields
+    const emailRegex = /^[a-zA-Z0-9\_\.\%\+\-]+\@[a-zA-Z0-9\.\-]+\.[a-z]{2,7}$/;
+    const matchEmail  = email.match(emailRegex); 
+    const phoneNumRegex = /^[0-9]{11}$/;
+    const matchPhoneNum = phone.match(phoneNumRegex);
+    const postalCodeNumRegex = /^[0-9]{5}$/;
+    const matchPostalCodeNum = postalcode.match(postalCodeNumRegex);
+    
+    const newInpValidCheck: CheckOutInpCheck = {
+      emailCheck: matchEmail,
+      phoneCheck: matchPhoneNum,
+      firstnameCheck: firstname.length >= 3 && firstname.length <= 10,
+      lastnameCheck: lastname.length >= 3 && lastname.length <= 10,
+      addressCheck: address.length >= 10 && address.length <= 20,
+      cityCheck: city.length >= 4 && city.length <= 20,
+      countryCheck: country.length >= 4 && country.length <= 20,
+      stateCheck: state.length >= 5 && state.length <= 20,
+      postalcodeCheck: matchPostalCodeNum,
+    };
+    const {addressCheck,cityCheck,countryCheck,emailCheck,firstnameCheck,lastnameCheck,phoneCheck,postalcodeCheck,stateCheck} = newInpValidCheck;
+    
+    if(!addressCheck || !cityCheck || !countryCheck || !emailCheck || !firstnameCheck || !lastnameCheck || !phoneCheck || !postalcodeCheck || !stateCheck){
+      alert(`Please complete all required fields before proceeding to checkout.`)
+    }else if(cartData.checkOutList.length ===0 ){
+      alert(`Oops! You haven’t added any items to your cart. Browse our products and add your favorites to continue.`)
+    }
+    else{
+      alert(`Thank you for your purchase! Your payment was successful. A confirmation email has been sent to ${email} .`);
+      setCheckOutInp({
+        address:'',
+        city:'',
+        country:'',
+        email:'',
+        firstname:'',
+        lastname:'',
+        phone:'',
+        postalcode:'',
+        state:'',
+      });
+      cartDispatch({type:CHECKOUT_DONE,payload:''});
+    }
+};  
+
   //Fetch Header Content from Sanity
 
   useEffect(() => {
@@ -276,9 +363,7 @@ function Context({ children }: ContextChild) {
     navlist,
     cartname,
     "cartimgone":cartimgone.asset->url,
-    "cartimgtwo":cartimgtwo.asset->url,
-    cartquantity
-  
+    "cartimgtwo":cartimgtwo.asset->url
 }`),
       });
       dispatchWeb({
@@ -411,14 +496,28 @@ function Context({ children }: ContextChild) {
       throw new Error(`${error}: API Not Found`);
     }
   };
+  const {
+    CARTLISTSET,
+    PRODQUANTITYDEC,
+    PRODQUANTITYINC,
+    ADDCOLOR,
+    ADDSIZE,
+    ADDTOCART,
+    INC_ON_CART_PRODUCT,
+    DEC_ON_CART_PRODUCT,
+    CHECKOUT,
+    CHECKOUT_DONE,
+    RESET_COLOR_SIZE,
+  } = ADDTOCARTACTION;
 
   useEffect(() => {
     const callFetchCloth = async () => {
       const clothListForProductDetail: ClothList[] = (
         await fetchProduct(`https://clothcraft.vercel.app/api/clothapi`)
-      ).map((e) => ({ ...e, productquantity: 0 }));
+      ).map((e) => ({ ...e, productquantity: 1 }));
       // console.log(process.env.NEXT_PUBLIC_HOSTED_API)
       setProductList(clothListForProductDetail);
+      cartDispatch({type:CARTLISTSET,payload:clothListForProductDetail});
       const menList: ClothList[] = clothListForProductDetail.filter(
         (e) => e.productcategory === "men"
       );
@@ -441,90 +540,240 @@ function Context({ children }: ContextChild) {
         callFetchCloth();
       });
     return () => subscrip.unsubscribe();
-  }, []);
+  },[CARTLISTSET]);
 
   const initalCartData: CartType = {
     cartList: [],
     productQuantity: 0,
-    prodColor:'',
-    prodSize:'',
-    totalPrice:0,
-    totalQuantity:0,
-    AddProduct:[],
+    prodColor: "",
+    prodSize: "",
+    totalPrice: 0,
+    totalQuantity: 0,
+    shippingCost:10,
+    AddProduct: [],
+    checkOutList:[]
   };
   //applying Add to Cart Functionality
-  const { PRODQUANTITYDEC, PRODQUANTITYINC,ADDCOLOR,ADDSIZE,ADDTOCART } = ADDTOCARTACTION;
+  const onSetProdColor = (id: string, color: string) => {
+    cartDispatch({ type: ADDCOLOR, payload: { prodId: id, prodColor: color } });
+  };
+  const onSetProdSize = (id: string, size: string) => {
+    cartDispatch({ type: ADDSIZE, payload: { prodId: id, prodSize: size } });
+  };
+  const onAddToCart = (product: ClothList, quantity: number) => {
+    cartDispatch({ type: ADDTOCART, payload: { product, quantity } });
+  };
+ 
   const incQuantity = (id: string) => {
     cartDispatch({ type: PRODQUANTITYINC, payload: id });
   };
   const decQuantity = (id: string) => {
     cartDispatch({ type: PRODQUANTITYDEC, payload: id });
   };
-  const onSetProdColor = (id:string,color:string) => {
-    cartDispatch({type:ADDCOLOR,payload:{prodId:id,prodColor:color}});
+
+  //Add Product Increment
+  const addProdInc = (id:string) => {
+    cartDispatch({type:INC_ON_CART_PRODUCT,payload:id});
+    // alert(`ID: ${id}`)
+  }
+
+  //Add Product Decrement
+  const addProdDec = (id:string,quantity:number) => {
+    cartDispatch({type:DEC_ON_CART_PRODUCT,payload:{id,quantity}});
+    // alert(`ID: ${id}`)
+  }
+
+  //Calculate Total Quantity
+  const calculateQuantity = (addCart:CartListType[]) => {
+    const setTotalQuantity = addCart.map((e) => e.productquantity)
+              .reduce((prev, curr) => {
+                return prev + curr;
+    }, 0);
+    return setTotalQuantity;
   };
-  const onSetProdSize = (id:string,size:string) => {
-    cartDispatch({type:ADDSIZE,payload:{prodId:id,prodSize:size}});
+
+  //Calculate Total Quantity
+  const calculateTotalPrice = (addCart:CartListType[]) => {
+    const setTotalPrice = addCart.map((e) => e.productprice)
+    .reduce((prev, curr) => {
+      return prev + curr;
+    },0);
+    return setTotalPrice*calculateQuantity(addCart);
   };
-  const onAddToCart = (product:ClothList,quantity:number) => {
-    cartDispatch({type:ADDTOCART,payload:{product,quantity}})
-  };
-  
   const handleAddToCart = (state: CartType, action: CartAction): CartType => {
     switch (action.type) {
+      case CARTLISTSET:
+        return { ...state, cartList: (action.payload as ClothList[]) };
       case PRODQUANTITYINC:
-        const updatedCartInc = productList.map((e) =>
-          e.productid === (action.payload as string)
-            ? { ...e, productquantity:e.productquantity+1}
-            : e
-        );
-        return { ...state, cartList: updatedCartInc };
+        const updatedCartInc = state.cartList.map((e) => {
+          if (e.productid === (action.payload as string)){
+          //  const quanInc = ++e.productquantity;
+            return { ...e, productquantity: e.productquantity+1};
+          }; 
+            return e;
+        });
+        return { ...state, cartList: updatedCartInc, productQuantity:0 };
 
       case PRODQUANTITYDEC:
-        const updatedCartDec = productList.map((e) =>
-          e.productid === (action.payload as string)
-            ? { ...e, productquantity: Math.max(0, --e.productquantity) }
-            : e
-        );
-        return { ...state, cartList: updatedCartDec };
-      
+        const updatedCartDec = state.cartList.map((e) => {
+          if (e.productid === (action.payload as string)){
+            const quanDec = e.productquantity===0 ? 0 : e.productquantity-1;
+            return { ...e, productquantity:  quanDec};
+          } else {
+            return e;
+          }
+        });
+        return { ...state, cartList: updatedCartDec, productQuantity:0 };
+
       case ADDCOLOR:
-        const prodIdForColor = productList.find((e) => e.productid === (action.payload as CartColor).prodId);
-      if(prodIdForColor){
-        return {...state,prodColor:(action.payload as CartColor).prodColor};           
-      }else{
-        return state;
-      }
-       case ADDSIZE:
-        const prodIdForSize = productList.find((e) => e.productid === (action.payload as CartSize).prodId);
-      if(prodIdForSize){
-        return {...state,prodSize:(action.payload as CartSize).prodSize};           
-      }else{
-        return state;
-      }
-      case ADDTOCART:
-        const prodIdForFind = productList.find((e) => e.productid === (action.payload as CartAdd).product.productid);
-      if(prodIdForFind){
-        if(state.prodColor === '' && state.prodSize === '' && prodIdForFind.productquantity<0){
-          alert('Plz selct the color , size and qunqtity of product');
-        }else{
-          // const setTotalQuantity = state.cartList.map((e) => e.productquantity).reduce((prev,curr) => {
-          //   return prev+curr;
-          // },0);
+        const prodIdForColor = state.cartList.find(
+          (e) => e.productid === (action.payload as CartColor).prodId
+        );
+        if (prodIdForColor) {
+          return {
+            ...state,
+            prodColor: (action.payload as CartColor).prodColor,
+          };
+        } else {
+          return state;
+        }  
+      case ADDSIZE:
+        const prodIdForSize = state.cartList.find(
+          (e) => e.productid === (action.payload as CartSize).prodId
+        );
+        if (prodIdForSize) {
+          return { ...state, prodSize: (action.payload as CartSize).prodSize };
+        } else {
+          return state;
         }
-      }else{
-        alert('Product is not Available')
-      }
+      case RESET_COLOR_SIZE:
+        const updatedCartList = state.cartList.map((e) => {
+          if(e.productid === (action.payload as string)){
+            // remove one quantity for set the decrement of product
+            const deleteQuan = e.productquantity-1;
+            return {...e, productquantity:e.productquantity-deleteQuan}
+          }else{
+            return e;
+          }
+        });
+        return {...state,cartList:updatedCartList, prodColor:'',prodSize:'',productQuantity:1};
+      case ADDTOCART:
+        const prodIdForFind = state.cartList.find(
+          (e) => e.productid === (action.payload as CartAdd).product.productid
+        );
+        console.log(prodIdForFind)
+        // console.log(state.prodColor);
+        if (prodIdForFind) {
+          if (
+            state.prodColor === "" ||
+            state.prodSize === "" ||
+            prodIdForFind.productquantity < 1
+          ) {
+            alert("Plz selct the color , size and qunqtity of product");
+          } else {
+           
+            const selectProductColor = prodIdForFind.productcolors.find(
+              (e) => e.hex === state.prodColor
+            );
+            const selectProductSize = prodIdForFind.productsizes.find(
+              (e) => e === state.prodSize
+            );
+            // console.log(selectProductColor,selectProductSize);
+
+            if (selectProductColor && selectProductSize) {
+              const addProductItem: CartListType = {
+                productid: prodIdForFind.productid,
+                productname: prodIdForFind.productname,
+                productimage: prodIdForFind.productimage,
+                productprice: prodIdForFind.productprice,
+                productcategory: prodIdForFind.productcategory,
+                productquantity: prodIdForFind.productquantity,
+                productcolor: selectProductColor.hex,
+                productsize: selectProductSize,
+              };
+
+              // state.AddProduct.unshift(addProductItem);
+              const addCartItems = [...state.AddProduct, addProductItem];
+              
+              // console.log(setTotalQuantity)
+              // localStorage.setItem('Cart Items',JSON.stringify(addCartItems));
+              // console.log(addCartItems);
+              cartNavig.push('/cart');
+              return {
+                ...state,
+                AddProduct:addCartItems,
+                totalQuantity:calculateQuantity(addCartItems),
+                totalPrice:calculateTotalPrice(addCartItems),
+              };
+            } else {
+              alert("Color,Size is not Available");
+            }
+          }
+        } else {
+          alert("Product is not Available");
+        }
+      case INC_ON_CART_PRODUCT:
+        const incAddProd = state.AddProduct.map((e) => {
+          if(e.productid === (action.payload as string)){
+            return {...e, productquantity: e.productquantity+1}
+          };
+          return e;
+        }); 
+        return {...state,AddProduct:incAddProd,totalQuantity:calculateQuantity(incAddProd),totalPrice:calculateTotalPrice(incAddProd)}; 
+
+      case DEC_ON_CART_PRODUCT:
+        if((action.payload as CartDec).quantity===1){
+          //remove that item if quantity zero
+          const removeCartItem = state.AddProduct.filter((e) => {
+            return e.productid !== (action.payload as CartDec).id
+          });
+          return {...state, AddProduct:removeCartItem,totalQuantity:calculateQuantity(removeCartItem), totalPrice:calculateTotalPrice(removeCartItem)};
+        }else{
+
+          const decAddProd = state.AddProduct.map((e) => {
+            if(e.productid === (action.payload as CartDec).id){
+              return {...e, productquantity: e.productquantity-1}
+            }else{
+              return e;
+            }
+          });
+          return {...state,AddProduct:decAddProd,totalQuantity:calculateQuantity(decAddProd),totalPrice:calculateTotalPrice(decAddProd)};   
+        }
+      case CHECKOUT:
+        return {...state,checkOutList:state.AddProduct}  
+      case CHECKOUT_DONE:
+        return {...state,AddProduct:[],checkOutList:[],totalPrice:0,totalQuantity:0}  
 
       default:
         return state;
-    }
+    };
   };
 
   const [cartData, cartDispatch] = useReducer(handleAddToCart, initalCartData);
 
+  //Reset Product Selected Color
+  const onProductDetail = (id:string,categ:string) => {
+    cartDispatch({ type: RESET_COLOR_SIZE, payload: id });
+    cartNavig.push(`/${categ}/${id}`);
+
+  }
+  // useEffect(() => {
+  // }, []);
+
+  //Function to Handle Terms and Condition
+  const onHandleTerms = (e:FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if(!isChecked || cartData.totalQuantity==0 || cartData.totalPrice===0){
+      alert('Follow Condition')
+    }else{
+      alert('success');
+      cartDispatch({type:CHECKOUT,payload:''});
+      cartNavig.push('/checkout');
+    };
+  };
+  
   // const prod = productList.map((e) => {
-    // return e.productprice;
+  // return e.productprice;
   // });
   // const maxPrice = Math.max(...new Set(prod));
   //Filter Product Reducer
@@ -567,6 +816,8 @@ function Context({ children }: ContextChild) {
     console.log(filtColor);
     return filtColor;
   };
+
+  //Product Filter Reducer
   function filtProductReducer(
     state: ProductReducer,
     action: ProdAction
@@ -835,7 +1086,7 @@ function Context({ children }: ContextChild) {
   const footerRef = useRef<HTMLElement | null>(null);
   const sideBarRef = useRef<HTMLElement | null>(null);
 
-  //Input Handler
+  //Input Handler For Filtering
   const onInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
     //extract nameand value from input
     const { name, value } = e.target;
@@ -1135,8 +1386,16 @@ function Context({ children }: ContextChild) {
     decQuantity,
     onSetProdColor,
     onSetProdSize,
+    onProductDetail,
     onAddToCart,
-    // prodQuan,
+    addProdInc,
+    addProdDec,
+    onHandleTerms,
+    isChecked,
+    onHandleCheck,
+    onHandleCheckOutInp,
+    onHandleCheckOutForm,
+    checkOutInp,
     cartData,
   };
 

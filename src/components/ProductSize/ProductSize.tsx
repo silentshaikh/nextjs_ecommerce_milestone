@@ -1,9 +1,9 @@
 import React from 'react'
 
-function ProductSize() {
+function ProductSize({size}:{size:string}) {
   return (
     <p className='font-bold text-lg'>
-      L
+      {size}
     </p>
   )
 }

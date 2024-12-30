@@ -3,7 +3,7 @@ import useClothContext from '@/Hooks/ClothContext/ClothContext';
 import Image from 'next/image';
 import Link from 'next/link';
 function CartBox() {
-  const {headerContent} = useClothContext()
+  const {headerContent,cartData} = useClothContext()
   return (
     <Link href={'/cart'}>
     <div className='flex items-center '>
@@ -25,6 +25,7 @@ function CartBox() {
         height={13}
         />
       </div>
+      <h5 className='relative bottom-6 bg-[#D9D9D9] px-1 rounded-full text-white font-bold'>{cartData.totalQuantity}</h5>
     </div>
     </Link>
   )
